@@ -1,0 +1,107 @@
+.hero{
+    margin-top: 150px;
+}
+.boshla{
+    max-width: 700px;
+    width: 100%;
+    
+    margin: 0 auto;
+
+}
+.boshla h1{
+  
+    font-size: 50px;
+  
+  
+    margin-bottom: 20px;
+
+
+}
+.boshla p{
+    max-width: 541px;
+    width: 100%;
+   
+ 
+    font-size: 21px;
+
+    
+}
+.boshla p:nth-of-type(2){
+    margin-top: 20px;
+}
+.boshla button{
+    padding: 10px 25px;
+    display: block;
+    margin: 0 auto;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(to right, #1D0F91, #4A7CFF);
+    margin-top: 50px;
+    font-size: 30px ;
+    color: white;
+
+}
+.start{
+    display: none;
+}
+.login{
+    position: relative;
+  transform: translateY(-2000px);
+  transition: 500ms;
+  max-width: 500px;
+  margin: 0 auto;
+  
+
+
+
+
+}
+
+
+
+.login__bc{
+    display: none;
+    position: absolute;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+
+}
+.login__open{
+    transform: translateY(0px);
+    transition: 500ms;
+    z-index: 99;
+   
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.login__bc__open{
+ display: block;
+}
+
+
+
+
+
+.form{
+    max-width: 350px;
+    margin: 0 auto;
+    z-index: 99;
+
+
+}
