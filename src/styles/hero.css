@@ -1,5 +1,6 @@
 .hero{
     margin-top: 150px;
+  
 }
 .boshla{
     max-width: 700px;
@@ -49,22 +50,54 @@
   transform: translateY(-2000px);
   transition: 500ms;
   max-width: 500px;
+  width: 100%;
   margin: 0 auto;
+
+
+
+  margin-top: 50px;
+padding: 5px 10px 5px ;
+
+
+
+
+
+
+
   
 
 
 
 
 }
+.login h4{
 
+  
+  
+    font-size: 20px;
+    width: 100%;
+    margin: 0 auto;
+    margin-bottom: 20px ;
+    text-align: center;
+
+    
+}
+.login label{
+    display: block;
+    margin-bottom: 5px ;
+
+
+}
+.login input{
+    margin-bottom: 20px;
+
+}
 
 
 .login__bc{
     display: none;
     position: absolute;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+  
     top: 0;
     right: 0;
     bottom: 0;
@@ -73,9 +106,10 @@
 
 }
 .login__open{
+    position: fixed;
     transform: translateY(0px);
     transition: 500ms;
-    z-index: 99;
+   
    
 }
 
@@ -98,10 +132,18 @@
 
 
 
-.form{
-    max-width: 350px;
-    margin: 0 auto;
-    z-index: 99;
-
-
+@media(max-width:340px){
+    .boshla h1 {
+        font-size: 27px;
+    }
+    .boshla p {
+        font-size: 15px;
+        max-width: 305px;
+        width: 100%;
+    }
 }
+
+
+
+
+

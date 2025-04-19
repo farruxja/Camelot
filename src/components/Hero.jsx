@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import '../styles/hero.css'
-import loginimg from '../img/{991DBD5A-59E5-4BF4-A110-2B7C196A4317}.png'
+
 function Hero() {
 
     let start = useState()
@@ -58,7 +58,7 @@ function Hero() {
 
 
                 {/* login qismi  */}
-                <div className="login__bc" ref={login__bc}  style={{backgroundImage:`url(${loginimg})`}}>
+                <div className="login__bc" ref={login__bc}  >
                
                 </div>
                 <div className="login" ref={login}>
