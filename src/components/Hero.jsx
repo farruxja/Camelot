@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import '../styles/hero.css'
 
 function Hero() {
 
     let start = useState()
     let login = useState()
-    let login__bc = useState()
+    let test = useRef()
+
 
 
 
@@ -17,13 +18,14 @@ function Hero() {
     function startTest() {
         start.current.classList.add("start")
         login.current.classList.add("login__open")
-        login__bc.current.classList.add("login__bc__open")
 
 
     }
-    function testBosh(){
+    function testBosh(e) {
+        e.preventDefault()
         login.current.classList.remove("login__open")
-        login__bc.current.classList.remove("login__bc__open")
+        test.current.classList.add("test__open")
+
 
     }
 
@@ -49,7 +51,7 @@ function Hero() {
 
 
 
-                    <button onClick={startTest}>Testni boshlash</button>
+                    <button className='boshla_btn' onClick={startTest}>Testni boshlash</button>
 
                 </div>
 
@@ -58,19 +60,18 @@ function Hero() {
 
 
                 {/* login qismi  */}
-                <div className="login__bc" ref={login__bc}  >
-               
-                </div>
+
                 <div className="login" ref={login}>
                     <form className='form' onSubmit={testBosh}>
                         <h4>Malumotlaringizni toldiring </h4>
 
 
 
-                        <label htmlFor="ism">Ismingiz</label>
-                        <input type="text" id='ism' />
+                   <div className="login__content">
+                   <label htmlFor="ism">Ismingiz</label>
+                        <input type="text" id='ism'  required/>
                         <label htmlFor="fam">Familangiz</label>
-                        <input type="text" id='fam' />
+                        <input type="text" id='fam' required/>
                         <label htmlFor="num">Raqamingiz</label>
                         <input
                             type="tel"
@@ -80,11 +81,35 @@ function Hero() {
                             pattern="^\+998\s\d{2}\s\d{3}\s\d{2}\s\d{2}$"
                             required
                         />
-                        <button type="submit">Kirish</button>
+
+
+
+                       <div id="choice"> <button>Vaqt</button>
+                        <button>ustoz</button></div>
+                   </div>
+                        <button className='login__button' type="submit">Kirish</button>
                     </form>
 
 
                 </div>
+
+
+
+
+                 {/* test  qismi  */}
+
+                 <div className="test" ref={test}>
+                  <div className="test__div">
+                  <h2>1. savol. siz kecha abetga nima yedingiz ? </h2>
+
+                  <div className="varyant">
+                    <h4>A) osh</h4>
+                    <h4>B) shorva</h4>
+                    <h4>D) lagmon</h4>
+                  </div>
+                  </div>
+
+                 </div>
 
 
 

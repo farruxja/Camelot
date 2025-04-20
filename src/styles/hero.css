@@ -1,149 +1,205 @@
-.hero{
-    margin-top: 150px;
-  
+.hero {
+    margin-top: 100px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6fa;
 }
-.boshla{
+
+.boshla {
     max-width: 700px;
     width: 100%;
-    
     margin: 0 auto;
-
+    padding: 0 20px;
+    text-align: center;
 }
-.boshla h1{
-  
-    font-size: 50px;
-  
-  
+
+.boshla h1 {
+    font-size: 48px;
+    color: #1D0F91;
     margin-bottom: 20px;
-
-
+    font-weight: 700;
 }
-.boshla p{
-    max-width: 541px;
-    width: 100%;
-   
- 
-    font-size: 21px;
 
-    
+.boshla p {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
 }
-.boshla p:nth-of-type(2){
+
+.boshla p:nth-of-type(2) {
     margin-top: 20px;
 }
-.boshla button{
-    padding: 10px 25px;
-    display: block;
-    margin: 0 auto;
-    border-radius: 10px;
-    border: none;
-    background: linear-gradient(to right, #1D0F91, #4A7CFF);
-    margin-top: 50px;
-    font-size: 30px ;
-    color: white;
 
-}
-.start{
-    display: none;
-}
-.login{
-    position: relative;
-  transform: translateY(-2000px);
-  transition: 500ms;
-  max-width: 500px;
-  width: 100%;
-  margin: 0 auto;
-
-
-
-  margin-top: 50px;
-padding: 5px 10px 5px ;
-
-
-
-
-
-
-
-  
-
-
-
-
-}
-.login h4{
-
-  
-  
+.boshla_btn {
+    padding: 14px 30px;
     font-size: 20px;
-    width: 100%;
-    margin: 0 auto;
-    margin-bottom: 20px ;
-    text-align: center;
-
-    
-}
-.login label{
-    display: block;
-    margin-bottom: 5px ;
-
-
-}
-.login input{
-    margin-bottom: 20px;
-
+    font-weight: 600;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(to right, #4A7CFF, #1D0F91);
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 40px;
 }
 
+.boshla_btn:hover {
+    opacity: 0.9;
+    transform: scale(1.03);
+}
 
-.login__bc{
+.start {
     display: none;
-    position: absolute;
-  
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 2;
-
 }
-.login__open{
+
+.login {
     position: fixed;
-    transform: translateY(0px);
-    transition: 500ms;
-   
-   
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -2000px);
+    transition: 500ms ease;
+    background: #fff;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    padding: 30px 25px;
+    border-radius: 16px;
+    max-width: 500px;
+    width: 90%;
+    z-index: 10;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-.login__bc__open{
- display: block;
+.login__open {
+    transform: translate(-50%, -50%);
 }
 
+.login h4 {
+    font-size: 26px;
+    text-align: center;
+    color: #1D0F91;
+    margin-bottom: 25px;
+}
 
+.login label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 6px;
+    color: #333;
+}
 
+.login input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f5f7fb;
+    margin-bottom: 20px;
+    transition: 0.2s ease;
+}
 
+.login input:focus {
+    border-color: #4A7CFF;
+    outline: none;
+}
 
-@media(max-width:340px){
+.login__button {
+    padding: 12px 30px;
+    background: linear-gradient(to right, #4A7CFF, #1D0F91);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    display: block;
+    margin: 20px auto 0;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.login__button:hover {
+    transform: scale(1.04);
+    opacity: 0.95;
+}
+
+.login__content {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+#choice {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+#choice button {
+    flex: 1;
+    padding: 10px;
+    background: #1D0F91;
+    color: #fff;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#choice button:hover {
+    background: #4A7CFF;
+}
+
+#choice button:nth-of-type(1) {
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+#choice button:nth-of-type(2) {
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+.test {
+    display: none;
+    margin-top: 50px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    max-width: 700px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.test__open {
+    display: block;
+}
+
+.test__div h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.varyant h4 {
+    padding: 12px 16px;
+    background-color: #f1f3f7;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.varyant h4:hover {
+    background-color: #dbe5ff;
+}
+
+@media (max-width: 600px) {
     .boshla h1 {
-        font-size: 27px;
+        font-size: 32px;
     }
+
     .boshla p {
-        font-size: 15px;
-        max-width: 305px;
-        width: 100%;
+        font-size: 16px;
+    }
+
+    .login {
+        padding: 20px 15px;
     }
 }
-
-
-
-
-
