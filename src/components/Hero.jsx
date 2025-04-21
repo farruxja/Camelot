@@ -63,21 +63,21 @@ function Hero() {
 
                 <div className="login" ref={login}>
                     <form className='form' onSubmit={testBosh}>
-                        <h4>Malumotlaringizni toldiring </h4>
+                        <h4>Malumotingizni kiriting </h4>
 
 
 
                    <div className="login__content">
                    <label htmlFor="ism">Ismingiz</label>
                         <input type="text" id='ism'  required/>
-                        <label htmlFor="fam">Familangiz</label>
+                        <label htmlFor="fam">Familiyangiz</label>
                         <input type="text" id='fam' required/>
                         <label htmlFor="num">Raqamingiz</label>
                         <input
                             type="tel"
                             id="num"
                             name="phone"
-                            placeholder="+998 90 123 45 67"
+                            placeholder="+998 99 *** ** **"
                             pattern="^\+998\s\d{2}\s\d{3}\s\d{2}\s\d{2}$"
                             required
                         />
@@ -85,7 +85,7 @@ function Hero() {
 
 
                        <div id="choice"> <button>Vaqt</button>
-                        <button>ustoz</button></div>
+                        <button>Ustoz</button></div>
                    </div>
                         <button className='login__button' type="submit">Kirish</button>
                     </form>
