@@ -7,6 +7,7 @@ function Hero() {
     let start = useState()
     let login = useState()
     let test = useRef()
+ 
 
 
 
@@ -79,39 +80,42 @@ function Hero() {
                             id="num"
                             name="phone"
                             placeholder="99 *** ** **"
-                            pattern="^\s\d{2}\s\d{3}\s\d{2}\s\d{2}$"
+                            
                             required
                         />
+                           <div id="choice"> 
+                          <div className="time">
+                            <label htmlFor="time">O'zingizga qulay vaqt ?</label>
+                            <select id='time' >
+                            <option value="">08:00-10:00</option>
+                            <option value="">10:00-12:00</option>
+                            <option value="">12:00-14:00</option>
+                            <option value="">14:00-16:00</option>
+                            <option value="">16:00-18:00</option>
+                            <option value="">18:00-20:00</option>
+                           </select>
+                          </div>
+                          <div className="teacher">
+                            <label htmlFor="teacger">O'zingizga ustoz tanglang.</label>
+                            <select id='teacher' >
+                            <option value="">Shag'boz</option>
+                            <option value="">Zuhur</option>
+                            <option value="">Husniddin</option>
+                            <option value="">Dilmurod</option>
+                            <option value="">Sheroz</option>
+                            
+                           </select>
+                          </div>
 
-
-
-                       <div id="choice"> 
-<div className="time__select">
-    <div className="time_childrens">
-    <h5>8:00-10:00</h5>
-    </div>
-    <div className="time_childrens">
-    <h5>10:00-12:00</h5>
-    </div>
-    <div className="time_childrens">
-    <h5>12:00-14:00</h5>
-    </div>
-    <div className="time_childrens">
-    <h5>14:00-16:00</h5>
-    </div>
-    <div className="time_childrens">
-    <h5>16:00-18:00</h5>
-    </div>
-    <div className="time_childrens">
-    <h5>18:00-20:00</h5>
-    </div>
-</div>
-                       <button>Vaqt</button>
-                        <button>Ustoz</button>
                         </div>
+
+
+
+                       
                    </div>
                         <button className='login__button' type="submit">Kirish</button>
                     </form>
+                 
 
 
                 </div>
