@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react'
 import '../styles/hero.css'
 
+
 function Hero() {
 
     let start = useState()
@@ -15,7 +16,7 @@ function Hero() {
 
 
 
-    function startTest() {
+    function openTest() {
         start.current.classList.add("start")
         login.current.classList.add("login__open")
 
@@ -38,8 +39,8 @@ function Hero() {
 
     return (
         <section className='hero'>
-
             {/* tetsni boshlash qismi */}
+            
             <div className="container">
                 <div className="boshla" ref={start}>
                     <h1>Ingliz tili darajasi testi</h1>
@@ -51,7 +52,7 @@ function Hero() {
 
 
 
-                    <button className='boshla_btn' onClick={startTest}>Testni boshlash</button>
+                    <button className='boshla_btn' onClick={openTest}>Testni boshlash</button>
 
                 </div>
 
@@ -77,15 +78,37 @@ function Hero() {
                             type="tel"
                             id="num"
                             name="phone"
-                            placeholder="+998 99 *** ** **"
-                            pattern="^\+998\s\d{2}\s\d{3}\s\d{2}\s\d{2}$"
+                            placeholder="99 *** ** **"
+                            pattern="^\s\d{2}\s\d{3}\s\d{2}\s\d{2}$"
                             required
                         />
 
 
 
-                       <div id="choice"> <button>Vaqt</button>
-                        <button>Ustoz</button></div>
+                       <div id="choice"> 
+<div className="time__select">
+    <div className="time_childrens">
+    <h5>8:00-10:00</h5>
+    </div>
+    <div className="time_childrens">
+    <h5>10:00-12:00</h5>
+    </div>
+    <div className="time_childrens">
+    <h5>12:00-14:00</h5>
+    </div>
+    <div className="time_childrens">
+    <h5>14:00-16:00</h5>
+    </div>
+    <div className="time_childrens">
+    <h5>16:00-18:00</h5>
+    </div>
+    <div className="time_childrens">
+    <h5>18:00-20:00</h5>
+    </div>
+</div>
+                       <button>Vaqt</button>
+                        <button>Ustoz</button>
+                        </div>
                    </div>
                         <button className='login__button' type="submit">Kirish</button>
                     </form>
