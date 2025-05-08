@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useReducer, useRef, useState } from 'react'
 
 import '../styles/test.css'
 import { useNavigate } from 'react-router-dom'
@@ -68,7 +68,7 @@ function StartTest() {
     };
 
     let [fullMixData, setFullMixData] = useState([]);
-    async function makeData() {
+    const makeData = useCallback(async()=>{
         let available_objects = [];
         for (let q of questions) {
             let fetchQuestion = await fetch(`https://dev.edu-devosoft.uz/api/questions/${q.id}`);
@@ -79,13 +79,13 @@ function StartTest() {
 
         let start_time = new Date().toISOString()
         localStorage.setItem('start_time', start_time)
-    }
+    }, [questions]);
 
 
     useEffect(() => {
         makeData();
 
-    }, [ignore])
+    }, [ignore, makeData])
 
 
     const [answers, setAnswers] = useState([]);
@@ -95,11 +95,12 @@ function StartTest() {
             return [...filtered, { question_id: questionId, option_id: optionId }];
         });
     };
-    const [isResultOpened, setIsResultOpened] = useState(false); 
+    
     const [custumer_test_id, setCustomer_test_id] = useState("")
     async function SaveResul() {
         handleFinish()
-        openResault()
+       
+       
         let now = new Date().toISOString();
         let customer = {
             customer_id: +localStorage.getItem('customerId'),
@@ -121,15 +122,13 @@ function StartTest() {
             setCustomer_test_id(json.customer_test.id);
             setNat_yak(false)
         }
-
+    
 
     }
     const [level, setLevel] = useState(null)
     let resault = useRef();
     async function openResault() {
-        if (isResultOpened) return;
-
-        setIsResultOpened(true); // Belgini o'zgartiramiz
+   
 
         let ready = answers.map(item => ({
             ...item,
