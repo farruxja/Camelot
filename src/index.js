@@ -6,6 +6,7 @@ import {  RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ErrorPage from './pages/ErrorPage';
 import TestPage from './pages/TestPage';
 import AdminPage from './pages/AdminPage';
+import StartTest from './pages/StartTest';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -17,6 +18,10 @@ const myRouter = createBrowserRouter([{
     {
       path:"/",
       element:<TestPage/>,
+    },
+    {
+      path:'/test',
+      element:<StartTest/>,
     },
     {
       path:"/admin",

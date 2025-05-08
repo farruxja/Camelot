@@ -1,0 +1,224 @@
+import React, { useEffect, useReducer, useRef, useState } from 'react'
+
+import '../styles/test.css'
+import { useNavigate } from 'react-router-dom'
+
+function StartTest() {
+    let navigate = useNavigate()
+    const [questions, setQuestions] = useState([])
+    const [ignore, fourceUpdate] = useReducer(x => x + 1)
+    const [remainingTime, setRemainingTime] = useState(0);
+
+    const [time, setTime] = useState(null)
+
+    async function getQuestions() {
+        let fetchQuestion = await fetch(`https://dev.edu-devosoft.uz/api/test/${localStorage.getItem("choosen_test_id")}`);
+        let json = await fetchQuestion.json();
+        setQuestions(json.questions);
+
+
+
+        if (json.questions) {
+            fourceUpdate()
+        }
+    }
+    const intervalRef = useRef(null);
+
+    useEffect(() => {
+        getQuestions();
+        async function fetchTime() {
+            let response = await fetch(`https://dev.edu-devosoft.uz/api/test/${localStorage.getItem("choosen_test_id")}`);
+            let json = await response.json();
+
+            setTime(json.time)
+            if (json.time) {
+                setRemainingTime(json.time * 60); // daqiqani soniyaga o'tkazamiz
+
+                // Timer start
+                if (intervalRef.current) {
+                    clearInterval(intervalRef.current); // eski intervalni to'xtatish
+                }
+
+                intervalRef.current = setInterval(() => {
+                    setRemainingTime((prev) => {
+                        if (prev <= 1) {
+                            clearInterval(intervalRef.current);
+                            return 0;
+                        }
+                        return prev - 1;
+                    });
+                }, 1000);
+            }
+        }
+        fetchTime();
+
+        return () => clearInterval(intervalRef.current);
+    }, [])
+    const [totaltime, setTotaltime] = useState(null)
+    const formatTime = (seconds) => {
+        const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+        const s = (seconds % 60).toString().padStart(2, '0');
+        return `${m}:${s}`;
+    };
+    const handleFinish = () => {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+        const totalTime = (time * 60) - remainingTime;
+        setTotaltime(totalTime);
+    };
+
+    let [fullMixData, setFullMixData] = useState([]);
+    async function makeData() {
+        let available_objects = [];
+        for (let q of questions) {
+            let fetchQuestion = await fetch(`https://dev.edu-devosoft.uz/api/questions/${q.id}`);
+            let json = await fetchQuestion.json();
+            available_objects.push(json)
+        }
+        setFullMixData(available_objects);
+
+        let start_time = new Date().toISOString()
+        localStorage.setItem('start_time', start_time)
+    }
+
+
+    useEffect(() => {
+        makeData();
+
+    }, [ignore])
+
+
+    const [answers, setAnswers] = useState([]);
+    const handleOptionChange = (questionId, optionId) => {
+        setAnswers(prevAnswers => {
+            const filtered = prevAnswers.filter(ans => ans.question_id !== questionId);
+            return [...filtered, { question_id: questionId, option_id: optionId }];
+        });
+    };
+    const [isResultOpened, setIsResultOpened] = useState(false); 
+    const [custumer_test_id, setCustomer_test_id] = useState("")
+    async function SaveResul() {
+        handleFinish()
+        openResault()
+        let now = new Date().toISOString();
+        let customer = {
+            customer_id: +localStorage.getItem('customerId'),
+            test_id: +localStorage.getItem("choosen_test_id"),
+            started_at: localStorage.getItem('start_time'),
+            finished_at: now
+        }
+        console.log(answers);
+        let fetchQuestion = await fetch(`https://dev.edu-devosoft.uz/api/customer-test`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(customer)
+        });
+        let json = await fetchQuestion.json();
+
+        if (json.customer_test.id) {
+            setCustomer_test_id(json.customer_test.id);
+            setNat_yak(false)
+        }
+
+
+    }
+    const [level, setLevel] = useState(null)
+    let resault = useRef();
+    async function openResault() {
+        if (isResultOpened) return;
+
+        setIsResultOpened(true); // Belgini o'zgartiramiz
+
+        let ready = answers.map(item => ({
+            ...item,
+            customer_test_id: custumer_test_id  // yangi key va bir xil qiymat
+        }));
+        const bodyData = {
+            list: ready,
+        };
+        let fetchQuestion = await fetch(`https://dev.edu-devosoft.uz/api/customer-answer`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(bodyData)
+        });
+        let json = await fetchQuestion.json();
+        setLevel(json)
+        console.log(json)
+
+        resault.current.classList.add("resault__open");
+    }
+
+    function closeResault() {
+        resault.current.classList.remove("resault__open")
+        navigate("/")
+    }
+
+
+
+
+
+    const [nat_yak, setNat_yak] = useState(true)
+    let count = +localStorage.getItem("count")
+    return (
+        <section className='test__page'>
+
+
+            <h1>{formatTime(remainingTime)}</h1>
+            {fullMixData?.map((quest) => {
+                return (
+                    <div key={quest.id} className='test__test'>
+                        <h4>{quest.question}</h4>
+                        <ul className='varyant'>
+                            {quest.option.map((item) => {
+                                return (
+                                    <div key={item.id}>
+                                        <label >
+                                            <input
+                                                value={item.id} type="radio" name={item.question_id} id=""
+                                                onChange={() => handleOptionChange(quest.id, item.id)}
+                                            />
+
+                                            <li key={item.id}> {item.option}</li>
+                                        </label>
+                                    </div>
+
+                                )
+                            })}
+                        </ul>
+                    </div>
+                )
+            })}
+            <div className="end__button">
+                {nat_yak === true ?
+                    <button className='end__btn' onClick={() => SaveResul()} type="button">Yakunlash</button>
+                    :
+                    <button className='end__res' onClick={openResault}>Natijani ko'rish</button>
+
+                }
+            </div>
+
+
+            <div className="resault" ref={resault}>
+                <h4>Marhamat natijangizni ko'rishingiz mumkun</h4>
+                <div className="res__wrapper">
+                    <h2>Sizning darajangiz <strong>"{level?.result}"</strong> </h2>
+                    <p>Siz bu testni {formatTime(totaltime)} daqiqada ishlab  tugatdingiz va
+                        Siz {count} ta savoldan {level?.score}tasiga to'gri javob berdingiz.
+                    </p>
+                    <p>Sizga adminlarimiz bog'lanishadi, Iltimos kuting...</p>
+                </div>
+
+
+
+                <button onClick={closeResault}>Ok</button>
+
+            </div>
+        </section>
+    )
+}
+
+export default StartTest

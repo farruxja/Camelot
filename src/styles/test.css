@@ -1,0 +1,166 @@
+.test__page {
+    margin-top: 50px;
+}
+
+
+
+.test__test {
+    padding: 20px 10px 10px 10px;
+    background-color: #4a7dff11;
+    width: 100%;
+    border-radius: 20px;
+    margin-bottom: 20px;
+
+}
+
+.test__test h4 {
+    margin-bottom: 10px;
+}
+
+.varyant {
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.varyant label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px;
+    width: 100%;
+    background-color: white;
+    border: 1px solid gray;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.varyant label:hover {
+
+    background: linear-gradient(to right, #1D0F91, #4A7CFF);
+    border: none;
+
+}
+
+.varyant label:active {
+
+    background: linear-gradient(to right, #1D0F91, #4A7CFF);
+    border: none;
+
+}
+
+.varyant li {
+    list-style: none;
+    margin-bottom: 5px;
+}
+
+.end__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 70px;
+
+    gap: 10px;
+
+
+}
+
+.end__btn {
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 26px;
+    background-color: transparent;
+    border: 1px solid darkblue;
+    transition: 300ms;
+    color: darkblue;
+}
+
+.end__btn:active {
+
+    background-color: darkblue;
+
+    transition: 300ms;
+    color: white;
+}
+
+.end__res {
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 26px;
+    background-color: transparent;
+    border: 1px solid darkgreen;
+    transition: 300ms;
+    color: darkgreen;
+}
+
+.end__res:active {
+
+    background-color: darkgreen;
+
+    transition: 300ms;
+    color: white;
+}
+
+
+.resault {
+    display: none;
+    transition: 500ms;
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 4;
+    background-color: white;
+    padding-top: 50px;
+
+}
+
+.resault h4 {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    font-size: 26px;
+
+
+}
+
+.res__wrapper img {
+    max-width: 200px;
+    width: 100%;
+
+}
+
+.res__wrapper {
+
+    width: 90%;
+    margin: 0 auto;
+
+}
+
+.res__wrapper h2 {
+    display: block;
+    margin-bottom: 10px;
+
+}
+
+.resault__open {
+    display: block;
+    transition: 500ms;
+}
+
+.resault button {
+    padding: 10px 15px;
+    font-size: 21px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+    color: white;
+    background: linear-gradient(to right, #1D0F91, #4A7CFF);
+}

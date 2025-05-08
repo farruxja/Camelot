@@ -1,5 +1,6 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import '../styles/hero.css'
+import { useNavigate } from 'react-router-dom'
 
 
 function Hero() {
@@ -10,45 +11,126 @@ function Hero() {
     let name = useRef()
     let phone = useRef()
     let lastname = useRef()
+    let time = useRef()
+    let teacher_name = useRef()
+    const [employee, setEmployee] = useState(null)
+
+    const [question, setQuestion] = useState()
+
+
+
+
+    let navigate = useNavigate()
 
 
 
 
 
 
+    useEffect(() => {
+        getEmployee()
+        getQuestion()
+
+    }, [])
 
 
+    async function getEmployee() {
+        let fetchEmployee = await fetch('https://dev.edu-devosoft.uz/api/employee/web')
+        let json = await fetchEmployee.json()
+
+        setEmployee(json)
+    }
 
 
     function openTest() {
         start.current.classList.add("start")
-        login.current.classList.add("login__open")
+        test.current.classList.add("test__boshla__open")
+
 
 
     }
-    function testBosh(e) {
-        let ready = {
-       
-            full_name: `${name.current.value} ${lastname.current.value}`,
 
+    
+const[sub_id, setSub_id]=useState()
+
+
+    async function testBosh(e) {
+        let ready = {
+            full_name: `${name.current.value} ${lastname.current.value}`,
             phone_number: phone.current.value,
-         
-            subject_id: 1,
-          
+            subject_id: sub_id,
+            time: time.current.value,
+            teacher_name: teacher_name.current.value,
         }
         e.preventDefault()
-        fetch("https://dev.edu-devosoft.uz/api/customer/login", {
+     
+        let loginCustom = await fetch("https://dev.edu-devosoft.uz/api/customer/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(ready)
-        })
-        login.current.classList.remove("login__open")
-        test.current.classList.add("test__open")
+        });
+        let jsonA = await loginCustom.json()
+       
+
+        localStorage.setItem("customerId", jsonA.customer.id)
+       
+
+       
+        
+        navigate('/test')
+       
+
+
 
 
     }
+
+
+
+
+
+
+
+
+
+    async function getQuestion() {
+        let fetchQuestion = await fetch("https://dev.edu-devosoft.uz/api/test");
+        let json = await fetchQuestion.json();
+        setQuestion(json)
+    
+
+
+
+    }
+
+
+
+
+    // test idni olib localga saqlaydi
+
+    function navigateByTestId(e, id, count, subject_id) {
+        test.current.classList.remove("test__boshla__open")
+        login.current.classList.add("login__open")
+
+        localStorage.setItem('choosen_test_id', id);
+        localStorage.setItem('count', count);
+    
+
+        setSub_id(subject_id)
+      
+     
+        
+
+
+    }
+
+
+
+
+
+
 
 
 
@@ -60,6 +142,7 @@ function Hero() {
     return (
         <section className='hero'>
             {/* tetsni boshlash qismi */}
+
 
             <div className="container">
                 <div className="boshla" ref={start}>
@@ -82,7 +165,7 @@ function Hero() {
 
                 {/* login qismi  */}
 
-                <div className="login" ref={login}>
+                <div className="login" ref={login} >
                     <form className='form' onSubmit={(e) => testBosh(e)}>
                         <h4>Malumotingizni kiriting </h4>
 
@@ -98,31 +181,32 @@ function Hero() {
                                 type="tel"
                                 id="num"
                                 name="phone"
-                                placeholder="99 *** ** **"
 
+
+                                defaultValue={"+998"}
+                                placeholder=" 99 *** ** **"
                                 required
                             />
                             <div id="choice">
                                 <div className="time">
                                     <label htmlFor="time">O'zingizga qulay vaqt ?</label>
-                                    <select id='time'  >
-                                        <option value="8">08:00-10:00</option>
-                                        <option value="10">10:00-12:00</option>
-                                        <option value="12">12:00-14:00</option>
-                                        <option value="14">14:00-16:00</option>
-                                        <option value="16">16:00-18:00</option>
-                                        <option value="18">18:00-20:00</option>
+                                    <select id='time' ref={time} >
+                                        <option value="08:00-10:00">08:00-10:00</option>
+                                        <option value="10:12:00">10:00-12:00</option>
+                                        <option value="14:00-16:00">14:00-16:00</option>
+                                        <option value="16:00-18:00">16:00-18:00</option>
+                                        <option value="18:30-20:30">18:30-20:30</option>
+                                       
                                     </select>
                                 </div>
                                 <div className="teacher" >
-                                    <label htmlFor="teacger">O'zingizga ustoz tanglang.</label>
-                                    <select id='teacher' >
-                                        <option value="shag'boz">Shag'boz</option>
-                                        <option value="zuhur">Zuhur</option>
-                                        <option value="husniddin">Husniddin</option>
-                                        <option value="dilmurod">Dilmurod</option>
-                                        <option value="sheroz">Sheroz</option>
-
+                                    <label htmlFor="teacher">O'zingizga ustoz tanglang.</label>
+                                    <select id='teacher' ref={teacher_name}>
+                                        {employee?.map((item, index) => {
+                                            return (
+                                                <option key={index} value={item?.full_name}>{item?.full_name}</option>
+                                            )
+                                        })}
                                     </select>
                                 </div>
 
@@ -144,18 +228,30 @@ function Hero() {
 
                 {/* test  qismi  */}
 
-                <div className="test" ref={test}>
-                    <div className="test__div">
-                        <h2>1. savol. siz kecha abetga nima yedingiz ? </h2>
-
-                        <div className="varyant">
-                            <h4>A) osh</h4>
-                            <h4>B) shorva</h4>
-                            <h4>D) lagmon</h4>
-                        </div>
+                <div className="test__boshla" ref={test}>
+                <h1>Test mavzusini tanlang ! <p>Eslatma: Test boshlanishi bilan vaqt ham bo'shlanadi </p></h1>
+                  <div className="boshla__wrapper">
+                  <div >
+                    {question?.map((item) => {
+                        return (
+                            <div className="boshla__div" onClick={(e) => navigateByTestId(e, item.id, item.count, item.subject_id)} key={item.id} >
+                              
+                               <h4>Test Mavzusi: {item.subject.name}</h4>
+                                <h4>Testlar soni: {item.count}</h4>
+                                
+                                <h4>Berilgan vaqt: {item?.time}</h4>
+                              
+                             
+                            </div>
+                        )
+                    })}
                     </div>
-
+                  
+                  </div>
+                   
                 </div>
+
+
 
 
 
