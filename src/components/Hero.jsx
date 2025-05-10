@@ -7,7 +7,7 @@ function Hero() {
 
     let start = useRef()
     let login = useRef()
-    let test = useRef()
+ 
     let name = useRef()
     let phone = useRef()
     let lastname = useRef()
@@ -44,14 +44,14 @@ function Hero() {
 
     function openTest() {
         start.current.classList.add("start")
-        test.current.classList.add("test__boshla__open")
+        login.current.classList.add("login__open")
 
 
 
     }
 
-    
-const[sub_id, setSub_id]=useState()
+
+    const [sub_id, setSub_id] = useState()
 
 
     async function testBosh(e) {
@@ -63,7 +63,7 @@ const[sub_id, setSub_id]=useState()
             teacher_name: teacher_name.current.value,
         }
         e.preventDefault()
-     
+
         let loginCustom = await fetch("https://dev.edu-devosoft.uz/api/customer/login", {
             method: "POST",
             headers: {
@@ -72,15 +72,15 @@ const[sub_id, setSub_id]=useState()
             body: JSON.stringify(ready)
         });
         let jsonA = await loginCustom.json()
-       
+
 
         localStorage.setItem("customerId", jsonA.customer.id)
-       
 
-       
-        
+
+
+
         navigate('/test')
-       
+
 
 
 
@@ -99,7 +99,7 @@ const[sub_id, setSub_id]=useState()
         let fetchQuestion = await fetch("https://dev.edu-devosoft.uz/api/test");
         let json = await fetchQuestion.json();
         setQuestion(json)
-    
+
 
 
 
@@ -111,17 +111,17 @@ const[sub_id, setSub_id]=useState()
     // test idni olib localga saqlaydi
 
     function navigateByTestId(e, id, count, subject_id) {
-        test.current.classList.remove("test__boshla__open")
-        login.current.classList.add("login__open")
+      
+
 
         localStorage.setItem('choosen_test_id', id);
         localStorage.setItem('count', count);
-    
+
 
         setSub_id(subject_id)
-      
-     
-        
+
+
+
 
 
     }
@@ -145,17 +145,32 @@ const[sub_id, setSub_id]=useState()
 
 
             <div className="container">
-                <div className="boshla" ref={start}>
-                    <h1>Ingliz tili darajasi testi</h1>
-                    <p>Ingliz tili darajasi testiga xush kelibsiz!
-
-                        Ushbu test ingliz tili grammatikasi bo'yicha bilimingizni baholaydi.</p>
-
-                    <p>Savollar Boshlang'ich (A1) darajasidan boshlanadi va asta-sekin qiyinlashadi. Jami 60 ta savol bor, vaqt chegarasi 30 daqiqa. Gapni yakunlash uchun eng yaxshi variantni tanlang. Pastga aylantiring va savollarga javob bering!</p>
 
 
+                {question?.map((item) => {
+                    return (
+                        <div className="boshla" ref={start} onClick={(e) => navigateByTestId(e, item.id, item.count, item.subject_id)} key={item.id} >
+                            <h1>{item.subject.name}</h1>
+                            <p>Ingliz tili darajasi testiga xush kelibsiz!
 
-                    <button className='boshla_btn' onClick={openTest}>Testni boshlash</button>
+                                Ushbu test ingliz tili grammatikasi bo'yicha bilimingizni baholaydi.</p>
+
+                            <p>Savollar Boshlang'ich (A1) darajasidan boshlanadi va asta-sekin qiyinlashadi. Jami {item.count} ta savol bor, vaqt chegarasi {item?.time} daqiqa. Gapni yakunlash uchun eng yaxshi variantni tanlang. Pastga aylantiring va savollarga javob bering!</p>
+
+                            <button className='boshla_btn' onClick={openTest}>Testni boshlash</button>
+
+
+                        </div>
+                    )
+                })}
+
+                <div >
+
+
+
+
+
+
 
                 </div>
 
@@ -196,7 +211,7 @@ const[sub_id, setSub_id]=useState()
                                         <option value="14:00-16:00">14:00-16:00</option>
                                         <option value="16:00-18:00">16:00-18:00</option>
                                         <option value="18:30-20:30">18:30-20:30</option>
-                                       
+
                                     </select>
                                 </div>
                                 <div className="teacher" >
@@ -225,31 +240,6 @@ const[sub_id, setSub_id]=useState()
 
 
 
-
-                {/* test  qismi  */}
-
-                <div className="test__boshla" ref={test}>
-                <h1>Test mavzusini tanlang ! <p>Eslatma: Test boshlanishi bilan vaqt ham bo'shlanadi </p></h1>
-                  <div className="boshla__wrapper">
-                  <div >
-                    {question?.map((item) => {
-                        return (
-                            <div className="boshla__div" onClick={(e) => navigateByTestId(e, item.id, item.count, item.subject_id)} key={item.id} >
-                              
-                               <h4>Test Mavzusi: {item.subject.name}</h4>
-                                <h4>Testlar soni: {item.count}</h4>
-                                
-                                <h4>Berilgan vaqt: {item?.time}</h4>
-                              
-                             
-                            </div>
-                        )
-                    })}
-                    </div>
-                  
-                  </div>
-                   
-                </div>
 
 
 
