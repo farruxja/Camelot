@@ -151,9 +151,7 @@ function Hero() {
                     return (
                         <div className="boshla" ref={start} onClick={(e) => navigateByTestId(e, item.id, item.count, item.subject_id)} key={item.id} >
                             <h1>{item.subject.name}</h1>
-                            <p>Ingliz tili darajasi testiga xush kelibsiz!
-
-                                Ushbu test ingliz tili grammatikasi bo'yicha bilimingizni baholaydi.</p>
+                         
 
                             <p>Savollar Boshlang'ich (A1) darajasidan boshlanadi va asta-sekin qiyinlashadi. Jami {item.count} ta savol bor, vaqt chegarasi {item?.time} daqiqa. Gapni yakunlash uchun eng yaxshi variantni tanlang. Pastga aylantiring va savollarga javob bering!</p>
 
