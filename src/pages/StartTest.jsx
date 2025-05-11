@@ -68,7 +68,7 @@ function StartTest() {
     };
 
     let [fullMixData, setFullMixData] = useState([]);
-    const makeData = useCallback(async()=>{
+    const makeData = useCallback(async () => {
         let available_objects = [];
         for (let q of questions) {
             let fetchQuestion = await fetch(`https://dev.edu-devosoft.uz/api/questions/${q.id}`);
@@ -95,12 +95,12 @@ function StartTest() {
             return [...filtered, { question_id: questionId, option_id: optionId }];
         });
     };
-    
+
     const [custumer_test_id, setCustomer_test_id] = useState("")
     async function SaveResul() {
         handleFinish()
-       
-       
+
+
         let now = new Date().toISOString();
         let customer = {
             customer_id: +localStorage.getItem('customerId'),
@@ -122,13 +122,14 @@ function StartTest() {
             setCustomer_test_id(json.customer_test.id);
             setNat_yak(false)
         }
-    
+
 
     }
+    let timer__ab = useRef()
     const [level, setLevel] = useState(null)
     let resault = useRef();
     async function openResault() {
-   
+
 
         let ready = answers.map(item => ({
             ...item,
@@ -149,6 +150,10 @@ function StartTest() {
         console.log(json)
 
         resault.current.classList.add("resault__open");
+        timer__ab.current.classList.add("none");
+
+
+
     }
 
     function closeResault() {
@@ -158,7 +163,20 @@ function StartTest() {
 
 
 
+    useEffect(() => {
+        const handleScroll = () => {
 
+            if (window.scrollY >= 10) {
+                timer__ab.current.classList.add('fixed-timer');
+            } else {
+                timer__ab.current.classList.remove('fixed-timer');
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     const [nat_yak, setNat_yak] = useState(true)
     let count = +localStorage.getItem("count")
@@ -166,16 +184,37 @@ function StartTest() {
         <section className='test__page'>
 
 
-            <h1>{formatTime(remainingTime)}</h1>
-            {fullMixData?.map((quest) => {
+            <h1 className='timer__ab' ref={timer__ab}>{formatTime(remainingTime)}</h1>
+            {fullMixData?.map((quest, index) => {
+               
                 return (
                     <div key={quest.id} className='test__test'>
-                        <h4>{quest.question}</h4>
+            {quest.file ? (
+  <>
+    {quest.file.endsWith(".mp3") || quest.file.endsWith(".wav") ? (
+      <audio controls>
+        <source src={quest.file} type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
+    ) : quest.file.endsWith(".mp4") || quest.file.endsWith(".webm") ? (
+      <video width="400" controls>
+        <source src={quest.file} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    ) : quest.file.endsWith(".jpg") || quest.file.endsWith(".png") || quest.file.endsWith(".jpeg") ? (
+      <img src={quest.file} alt="question media" style={{ maxWidth: "100%", marginBottom: "10px" }} />
+    ) : (
+      <p>Fayl formati qo‘llab-quvvatlanmaydi.</p>
+    )}
+  </>
+) : null}
+                        <h4> <span>{index + 1} </span>{quest.question}</h4>
                         <ul className='varyant'>
                             {quest.option.map((item) => {
                                 return (
                                     <div key={item.id}>
                                         <label >
+
                                             <input
                                                 value={item.id} type="radio" name={item.question_id} id=""
                                                 onChange={() => handleOptionChange(quest.id, item.id)}
@@ -191,6 +230,8 @@ function StartTest() {
                     </div>
                 )
             })}
+
+
             <div className="end__button">
                 {nat_yak === true ?
                     <button className='end__btn' onClick={() => SaveResul()} type="button">Yakunlash</button>

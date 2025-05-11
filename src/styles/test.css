@@ -1,7 +1,24 @@
 .test__page {
+    position: relative;
     margin-top: 50px;
+    max-width: 720px;
+    width: 100%;
+    margin: 0 auto;
 }
 
+.timer__ab {
+    background-color: #1D0F91;
+    color: white;
+    max-width: 90px;
+    padding: 5px 0 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    margin: 0 auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
 
 
 .test__test {
@@ -10,11 +27,14 @@
     width: 100%;
     border-radius: 20px;
     margin-bottom: 20px;
-
+    overflow: visible
 }
 
 .test__test h4 {
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .varyant {
@@ -124,7 +144,7 @@
     text-align: center;
     display: block;
     margin: 0 auto;
-    margin-bottom: 20px;
+    margin-bottom: 50px;
     font-size: 26px;
 
 
@@ -137,7 +157,7 @@
 }
 
 .res__wrapper {
-
+ max-width: 720px;
     width: 90%;
     margin: 0 auto;
 
@@ -165,4 +185,29 @@
     color: white;
     background: linear-gradient(to right, #1D0F91, #4A7CFF);
     margin-top: 50px;
+}
+
+.test__test h4 span {
+    background-color: #1D0F91;
+    color: white;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.fixed-timer {
+position: fixed;
+    background-color: #1D0F91;
+    color: white;
+    right: 0;
+    left: 0;
+    margin: 0 auto;
+    z-index: 9999;
+top: 40px;
+}
+.none{
+    display: none;
 }
