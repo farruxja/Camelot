@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useReducer, useRef, useState } from 'react'
-
 import '../styles/test.css'
 import { useNavigate } from 'react-router-dom'
 
@@ -108,7 +107,7 @@ function StartTest() {
             started_at: localStorage.getItem('start_time'),
             finished_at: now
         }
-        console.log(answers);
+
         let fetchQuestion = await fetch(`https://dev.edu-devosoft.uz/api/customer-test`, {
             method: "POST",
             headers: {
@@ -126,7 +125,7 @@ function StartTest() {
 
     }
     let timer__ab = useRef()
-    const [level, setLevel] = useState(null)
+    const [level, setLevel] = useState([])
     let resault = useRef();
     async function openResault() {
 
@@ -146,8 +145,11 @@ function StartTest() {
             body: JSON.stringify(bodyData)
         });
         let json = await fetchQuestion.json();
-        setLevel(json)
         console.log(json)
+        setLevel(json)
+
+
+
 
         resault.current.classList.add("resault__open");
         timer__ab.current.classList.add("none");
@@ -157,7 +159,7 @@ function StartTest() {
     }
 
     function closeResault() {
-        resault.current.classList.remove("resault__open")
+
         navigate("/")
     }
 
@@ -180,34 +182,38 @@ function StartTest() {
 
     const [nat_yak, setNat_yak] = useState(true)
     let count = +localStorage.getItem("count")
+
+
+
+
     return (
         <section className='test__page'>
 
 
             <h1 className='timer__ab' ref={timer__ab}>{formatTime(remainingTime)}</h1>
             {fullMixData?.map((quest, index) => {
-               
+
                 return (
                     <div key={quest.id} className='test__test'>
-            {quest.file ? (
-  <>
-    {quest.file.endsWith(".mp3") || quest.file.endsWith(".wav") ? (
-      <audio controls>
-        <source src={quest.file} type="audio/mpeg" />
-        Your browser does not support the audio element.
-      </audio>
-    ) : quest.file.endsWith(".mp4") || quest.file.endsWith(".webm") ? (
-      <video width="400" controls>
-        <source src={quest.file} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-    ) : quest.file.endsWith(".jpg") || quest.file.endsWith(".png") || quest.file.endsWith(".jpeg") ? (
-      <img src={quest.file} alt="question media" style={{ maxWidth: "100%", marginBottom: "10px" }} />
-    ) : (
-      <p>Fayl formati qo‘llab-quvvatlanmaydi.</p>
-    )}
-  </>
-) : null}
+                        {quest.file ? (
+                            <>
+                                {quest.file.endsWith(".mp3") || quest.file.endsWith(".wav") ? (
+                                    <audio className='media__test' controls>
+                                        <source src={`https://dev.edu-devosoft.uz/${quest.file}`} type="audio/mpeg" />
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                ) : quest.file.endsWith(".mp4") || quest.file.endsWith(".webm") ? (
+                                    <video className='media__test' controls>
+                                        <source src={`https://dev.edu-devosoft.uz/${quest.file}`} type="video/mp4" />
+                                        Your browser does not support the video tag.
+                                    </video>
+                                ) : quest.file.endsWith(".jpg") || quest.file.endsWith(".png") || quest.file.endsWith(".jpeg") ? (
+                                    <img className='media__test' src={`https://dev.edu-devosoft.uz/${quest.file}`} alt='' />
+                                ) : (
+                                    <p>Fayl formati qo‘llab-quvvatlanmaydi.</p>
+                                )}
+                            </>
+                        ) : null}
                         <h4> <span>{index + 1} </span>{quest.question}</h4>
                         <ul className='varyant'>
                             {quest.option.map((item) => {
@@ -227,6 +233,7 @@ function StartTest() {
                                 )
                             })}
                         </ul>
+                       
                     </div>
                 )
             })}
@@ -247,16 +254,19 @@ function StartTest() {
                 <div className="res__wrapper">
                     <h2>Sizning darajangiz <strong>"{level?.result}"</strong> </h2>
                     <p>Siz bu testni {formatTime(totaltime)} daqiqada ishlab  tugatdingiz va
-                        Siz {count} ta savoldan {level?.score}tasiga to'gri javob berdingiz.
+                        Siz {count} ta savoldan {level?.score} tasiga to'gri javob berdingiz.
                     </p>
                     <p>Sizga adminlarimiz bog'lanishadi, Iltimos kuting...</p>
                 </div>
-
-
-
                 <button onClick={closeResault}>Ok</button>
-
             </div>
+
+
+
+
+
+
+
         </section>
     )
 }

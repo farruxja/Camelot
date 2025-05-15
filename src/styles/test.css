@@ -37,6 +37,21 @@
     gap: 10px;
 }
 
+.media__test {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 400px;
+
+    width: 100%;
+    margin: 0 auto;
+
+
+
+    margin-bottom: 20px;
+
+}
+
 .varyant {
     flex-wrap: wrap;
     align-items: center;
@@ -51,7 +66,7 @@
     padding: 5px;
     width: 100%;
     background-color: white;
-    border: 1px solid gray;
+
     border-radius: 5px;
     margin-bottom: 5px;
 }
@@ -157,7 +172,7 @@
 }
 
 .res__wrapper {
- max-width: 720px;
+    max-width: 720px;
     width: 90%;
     margin: 0 auto;
 
@@ -187,6 +202,10 @@
     margin-top: 50px;
 }
 
+.resault button:nth-of-type(2) {
+    margin-top: 20px;
+}
+
 .test__test h4 span {
     background-color: #1D0F91;
     color: white;
@@ -199,15 +218,18 @@
 }
 
 .fixed-timer {
-position: fixed;
+    position: fixed;
     background-color: #1D0F91;
     color: white;
     right: 0;
     left: 0;
     margin: 0 auto;
     z-index: 9999;
-top: 40px;
+    top: 40px;
 }
-.none{
+
+.none {
     display: none;
 }
+
+
