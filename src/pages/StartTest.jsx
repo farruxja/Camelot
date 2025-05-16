@@ -7,7 +7,7 @@ function StartTest() {
     const [questions, setQuestions] = useState([])
     const [ignore, fourceUpdate] = useReducer(x => x + 1)
     const [remainingTime, setRemainingTime] = useState(0);
-
+    const [loading, setLoading] = useState(true)
     const [time, setTime] = useState(null)
 
     async function getQuestions() {
@@ -66,8 +66,11 @@ function StartTest() {
         setTotaltime(totalTime);
     };
 
+
+
     let [fullMixData, setFullMixData] = useState([]);
     const makeData = useCallback(async () => {
+        setLoading(false);
         let available_objects = [];
         for (let q of questions) {
             let fetchQuestion = await fetch(`https://dev.edu-devosoft.uz/api/questions/${q.id}`);
@@ -78,6 +81,10 @@ function StartTest() {
 
         let start_time = new Date().toISOString()
         localStorage.setItem('start_time', start_time)
+
+
+
+
     }, [questions]);
 
 
@@ -185,81 +192,95 @@ function StartTest() {
 
 
 
-
     return (
-        <section className='test__page'>
+        fullMixData.length > 0 ? <section className='test__page'>
 
-
-            <h1 className='timer__ab' ref={timer__ab}>{formatTime(remainingTime)}</h1>
-            {fullMixData?.map((quest, index) => {
-
-                return (
-                    <div key={quest.id} className='test__test'>
-                        {quest.file ? (
-                            <>
-                                {quest.file.endsWith(".mp3") || quest.file.endsWith(".wav") ? (
-                                    <audio className='media__test' controls>
-                                        <source src={`https://dev.edu-devosoft.uz/${quest.file}`} type="audio/mpeg" />
-                                        Your browser does not support the audio element.
-                                    </audio>
-                                ) : quest.file.endsWith(".mp4") || quest.file.endsWith(".webm") ? (
-                                    <video className='media__test' controls>
-                                        <source src={`https://dev.edu-devosoft.uz/${quest.file}`} type="video/mp4" />
-                                        Your browser does not support the video tag.
-                                    </video>
-                                ) : quest.file.endsWith(".jpg") || quest.file.endsWith(".png") || quest.file.endsWith(".jpeg") ? (
-                                    <img className='media__test' src={`https://dev.edu-devosoft.uz/${quest.file}`} alt='' />
-                                ) : (
-                                    <p>Fayl formati qo‘llab-quvvatlanmaydi.</p>
-                                )}
-                            </>
-                        ) : null}
-                        <h4> <span>{index + 1} </span>{quest.question}</h4>
-                        <ul className='varyant'>
-                            {quest.option.map((item) => {
-                                return (
-                                    <div key={item.id}>
-                                        <label >
-
-                                            <input
-                                                value={item.id} type="radio" name={item.question_id} id=""
-                                                onChange={() => handleOptionChange(quest.id, item.id)}
-                                            />
-
-                                            <li key={item.id}> {item.option}</li>
-                                        </label>
-                                    </div>
-
-                                )
-                            })}
-                        </ul>
-                       
-                    </div>
-                )
-            })}
-
-
-            <div className="end__button">
-                {nat_yak === true ?
-                    <button className='end__btn' onClick={() => SaveResul()} type="button">Yakunlash</button>
-                    :
-                    <button className='end__res' onClick={openResault}>Natijani ko'rish</button>
-
-                }
-            </div>
-
-
-            <div className="resault" ref={resault}>
-                <h4>Marhamat natijangizni ko'rishingiz mumkun</h4>
-                <div className="res__wrapper">
-                    <h2>Sizning darajangiz <strong>"{level?.result}"</strong> </h2>
-                    <p>Siz bu testni {formatTime(totaltime)} daqiqada ishlab  tugatdingiz va
-                        Siz {count} ta savoldan {level?.score} tasiga to'gri javob berdingiz.
-                    </p>
-                    <p>Sizga adminlarimiz bog'lanishadi, Iltimos kuting...</p>
+            {loading ? (
+                <div className="loader">
+                    <p>Yuklanmoqda...</p>
                 </div>
-                <button onClick={closeResault}>Ok</button>
-            </div>
+            ) : (
+                <div className="min__height">
+
+
+
+                    <h1 className='timer__ab' ref={timer__ab}>{formatTime(remainingTime)}</h1>
+
+
+
+                    {fullMixData?.map((quest, index) => {
+
+                        return (
+                            <div key={quest.id} className='test__test'>
+                                {quest.file ? (
+                                    <>
+                                        {quest.file.endsWith(".mp3") || quest.file.endsWith(".wav") ? (
+                                            <audio className='media__test' controls>
+                                                <source src={`https://dev.edu-devosoft.uz/${quest.file}`} type="audio/mpeg" />
+                                                Your browser does not support the audio element.
+                                            </audio>
+                                        ) : quest.file.endsWith(".mp4") || quest.file.endsWith(".webm") ? (
+                                            <video className='media__test' controls>
+                                                <source src={`https://dev.edu-devosoft.uz/${quest.file}`} type="video/mp4" />
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        ) : quest.file.endsWith(".jpg") || quest.file.endsWith(".png") || quest.file.endsWith(".jpeg") ? (
+                                            <img className='media__test' src={`https://dev.edu-devosoft.uz/${quest.file}`} alt='' />
+                                        ) : (
+                                            <p>Fayl formati qo‘llab-quvvatlanmaydi.</p>
+                                        )}
+                                    </>
+                                ) : null}
+                                <h4> <span>{index + 1} </span>{quest.question}</h4>
+                                <ul className='varyant'>
+                                    {quest.option.map((item) => {
+                                        return (
+                                            <div key={item.id}>
+                                                <label >
+
+                                                    <input
+                                                        value={item.id} type="radio" name={item.question_id} id=""
+                                                        onChange={() => handleOptionChange(quest.id, item.id)}
+                                                    />
+
+                                                    <li key={item.id}> {item.option}</li>
+                                                </label>
+                                            </div>
+
+                                        )
+                                    })}
+                                </ul>
+
+                            </div>
+                        )
+                    })}
+
+
+                    <div className="end__button">
+                        {nat_yak === true ?
+                            <button className='end__btn' onClick={() => SaveResul()} type="button">Yakunlash</button>
+                            :
+                            <button className='end__res' onClick={openResault}>Natijani ko'rish</button>
+
+                        }
+                    </div>
+
+
+                    <div className="resault" ref={resault}>
+                        <h4>Marhamat natijangizni ko'rishingiz mumkun</h4>
+                        <div className="res__wrapper">
+                            <h2>Sizning darajangiz <strong>"{level?.result}"</strong> </h2>
+                            <p>Siz bu testni {formatTime(totaltime)} daqiqada ishlab  tugatdingiz va
+                                Siz {count} ta savoldan {level?.score} tasiga to'gri javob berdingiz.
+                            </p>
+                            <p>Sizga adminlarimiz bog'lanishadi, Iltimos kuting...</p>
+                        </div>
+                        <button onClick={closeResault}>Ok</button>
+                    </div>
+
+
+                </div>
+            )}
 
 
 
@@ -267,7 +288,11 @@ function StartTest() {
 
 
 
-        </section>
+
+
+        </section> : <div className="load">
+            <span class="loader"></span>
+        </div>
     )
 }
 
