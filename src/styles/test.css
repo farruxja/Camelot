@@ -7,6 +7,10 @@
     font-weight: bold;
     margin: 0;
   }
+
+p, li, h3, h4{
+    font-family: "Roboto", sans-serif;
+}
 .loader, .loader:before, .loader:after {
     border-radius: 50%;
     width: 2.5em;
@@ -72,12 +76,18 @@
     margin-bottom: 20px;
     overflow: visible
 }
-
+.test__test h3{
+    margin-bottom: 20px;
+}
+.test__test p{
+    margin-bottom: 20px;
+}
 .test__test h4 {
     margin-bottom: 10px;
     display: flex;
     align-items: center;
     gap: 10px;
+    width: 100%;
 }
 
 .media__test {
@@ -252,8 +262,8 @@
 .test__test h4 span {
     background-color: #1D0F91;
     color: white;
-    width: 24px;
-    height: 24px;
+    width: 26px;
+    height: 26px;
     display: flex;
     align-items: center;
     justify-content: center;

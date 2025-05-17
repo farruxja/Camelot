@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useReducer, useRef, useState } from 'react'
+import React, {  useEffect, useReducer, useRef, useState } from 'react'
 import '../styles/test.css'
 import { useNavigate } from 'react-router-dom'
 
@@ -7,13 +7,14 @@ function StartTest() {
     const [questions, setQuestions] = useState([])
     const [ignore, fourceUpdate] = useReducer(x => x + 1)
     const [remainingTime, setRemainingTime] = useState(0);
-    const [loading, setLoading] = useState(true)
+
     const [time, setTime] = useState(null)
 
     async function getQuestions() {
         let fetchQuestion = await fetch(`https://dev.edu-devosoft.uz/api/test/${localStorage.getItem("choosen_test_id")}`);
         let json = await fetchQuestion.json();
         setQuestions(json.questions);
+        
 
 
 
@@ -52,7 +53,7 @@ function StartTest() {
         fetchTime();
 
         return () => clearInterval(intervalRef.current);
-    }, [])
+    }, [ignore])
     const [totaltime, setTotaltime] = useState(null)
     const formatTime = (seconds) => {
         const m = Math.floor(seconds / 60).toString().padStart(2, '0');
@@ -68,31 +69,9 @@ function StartTest() {
 
 
 
-    let [fullMixData, setFullMixData] = useState([]);
-    const makeData = useCallback(async () => {
-        setLoading(false);
-        let available_objects = [];
-        for (let q of questions) {
-            let fetchQuestion = await fetch(`https://dev.edu-devosoft.uz/api/questions/${q.id}`);
-            let json = await fetchQuestion.json();
-            available_objects.push(json)
-        }
-        setFullMixData(available_objects);
-
-        let start_time = new Date().toISOString()
-        localStorage.setItem('start_time', start_time)
 
 
-
-
-    }, [questions]);
-
-
-    useEffect(() => {
-        makeData();
-
-    }, [ignore, makeData])
-
+   
 
     const [answers, setAnswers] = useState([]);
     const handleOptionChange = (questionId, optionId) => {
@@ -190,16 +169,12 @@ function StartTest() {
     const [nat_yak, setNat_yak] = useState(true)
     let count = +localStorage.getItem("count")
 
-
+console.log(questions);
 
     return (
-        fullMixData.length > 0 ? <section className='test__page'>
+        questions.length > 0 ? <section className='test__page'>
 
-            {loading ? (
-                <div className="loader">
-                    <p>Yuklanmoqda...</p>
-                </div>
-            ) : (
+         
                 <div className="min__height">
 
 
@@ -208,7 +183,7 @@ function StartTest() {
 
 
 
-                    {fullMixData?.map((quest, index) => {
+                    {questions?.map((quest, index) => {
 
                         return (
                             <div key={quest.id} className='test__test'>
@@ -231,6 +206,14 @@ function StartTest() {
                                         )}
                                     </>
                                 ) : null}
+                               {
+                                quest?.text ? (
+                                    <>
+                                    <h3>{quest?.text.title}</h3>
+                                    <p>{quest?.text.text}</p>
+                                    </>
+                                ): null
+                               }
                                 <h4> <span>{index + 1} </span>{quest.question}</h4>
                                 <ul className='varyant'>
                                     {quest.option.map((item) => {
@@ -280,7 +263,7 @@ function StartTest() {
 
 
                 </div>
-            )}
+            
 
 
 
@@ -291,7 +274,7 @@ function StartTest() {
 
 
         </section> : <div className="load">
-            <span class="loader"></span>
+            <span className="loader"></span>
         </div>
     )
 }
