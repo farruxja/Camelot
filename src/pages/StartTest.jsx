@@ -22,9 +22,12 @@ function StartTest() {
             fourceUpdate()
         }
     }
+ 
     const intervalRef = useRef(null);
 
     useEffect(() => {
+        const now_time = new Date().toISOString();
+        localStorage.setItem('start_time', now_time);
         getQuestions();
         async function fetchTime() {
             let response = await fetch(`https://dev.edu-devosoft.uz/api/test/${localStorage.getItem("choosen_test_id")}`);
@@ -53,6 +56,7 @@ function StartTest() {
         fetchTime();
 
         return () => clearInterval(intervalRef.current);
+      
     }, [ignore])
     const [totaltime, setTotaltime] = useState(null)
     const formatTime = (seconds) => {
@@ -79,8 +83,9 @@ function StartTest() {
             const filtered = prevAnswers.filter(ans => ans.question_id !== questionId);
             return [...filtered, { question_id: questionId, option_id: optionId }];
         });
+        setBtn(false)
     };
-
+    const [nat_yak, setNat_yak] = useState(true)
     const [custumer_test_id, setCustomer_test_id] = useState("")
     async function SaveResul() {
         handleFinish()
@@ -102,8 +107,8 @@ function StartTest() {
             body: JSON.stringify(customer)
         });
         let json = await fetchQuestion.json();
-
-        if (json.customer_test.id) {
+        console.log(json.customer_test.id);
+        if (json?.customer_test?.id) {
             setCustomer_test_id(json.customer_test.id);
             setNat_yak(false)
         }
@@ -131,7 +136,7 @@ function StartTest() {
             body: JSON.stringify(bodyData)
         });
         let json = await fetchQuestion.json();
-        console.log(json)
+     
         setLevel(json)
 
 
@@ -166,10 +171,11 @@ function StartTest() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    const [nat_yak, setNat_yak] = useState(true)
+    
+    const [btn, setBtn]= useState(true)
     let count = +localStorage.getItem("count")
 
-console.log(questions);
+
 
     return (
         questions.length > 0 ? <section className='test__page'>
@@ -206,7 +212,8 @@ console.log(questions);
                                         )}
                                     </>
                                 ) : null}
-                               {
+                            
+                             {
                                 quest?.text ? (
                                     <>
                                     <h3>{quest?.text.title}</h3>
@@ -239,14 +246,17 @@ console.log(questions);
                     })}
 
 
+                   {
+                    btn === true ? null :
                     <div className="end__button">
-                        {nat_yak === true ?
-                            <button className='end__btn' onClick={() => SaveResul()} type="button">Yakunlash</button>
-                            :
-                            <button className='end__res' onClick={openResault}>Natijani ko'rish</button>
+                    {nat_yak === true ?
+                        <button className='end__btn' onClick={() => SaveResul()} type="button">Yakunlash</button>
+                        :
+                        <button className='end__res' onClick={openResault}>Natijani ko'rish</button>
 
-                        }
-                    </div>
+                    }
+                </div>
+                   }
 
 
                     <div className="resault" ref={resault}>

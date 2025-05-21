@@ -5,7 +5,7 @@ import App from './App';
 import {  RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ErrorPage from './pages/ErrorPage';
 import TestPage from './pages/TestPage';
-import AdminPage from './pages/AdminPage';
+
 import StartTest from './pages/StartTest';
 
 
@@ -22,11 +22,7 @@ const myRouter = createBrowserRouter([{
     {
       path:'/test',
       element:<StartTest/>,
-    },
-    {
-      path:"/admin",
-      element:<AdminPage/>
-    }
+    } 
   ]
 }])
 root.render(
