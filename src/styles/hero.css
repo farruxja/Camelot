@@ -1,3 +1,62 @@
+.header{
+    position: fixed;
+    left: 0;
+    right: 0;
+    
+    top: 0;
+    width: 100%;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.24);
+    backdrop-filter: blur(10px);
+   
+
+
+}
+.header__wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+
+}
+.logo{
+    img{
+        width: 250px;
+    }
+
+}
+.til{
+    border: none;
+    max-width: 60px;
+    width: 100%;
+    font-size: 20px;
+    background-color: transparent;
+    
+    
+  
+}
+.til option{
+    font-size: 24px;
+}
+
+
+
+
+
+@media(max-width:500px){
+    .logo{
+        img{
+            width: 180px;
+        }
+    
+    } 
+    .header__wrapper{
+        padding-right: 10px;
+    }
+    
+}
+
 .hero {
     margin-top: 150px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
