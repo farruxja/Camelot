@@ -207,10 +207,11 @@ function StartTest() {
             res5: "ta savoldan",
             res6: "tasiga to‘g‘ri javob berdingiz.",
             res7: "Sizga adminlarimiz bog‘lanishadi. Iltimos, kuting...",
-            allres: "Javoblaringizni ko‘ring"
+            allres: "Javoblaringizni ko‘ring",
+            natogri:"Natog'ri javob"
         },
         {
-            id: "2",
+            id: "3",
             name: "Finish",
             name2: "View Result",
             res: "Here are your results:",
@@ -220,10 +221,11 @@ function StartTest() {
             res5: "out of",
             res6: "questions correctly.",
             res7: "Our administrators will contact you. Please wait...",
-            allres: "View your answers"
+            allres: "View your answers",
+            natogri:"Wrong answer"
         },
         {
-            id: "3",
+            id: "2",
             name: "Завершить",
             name2: "Посмотреть результат",
             res: "Пожалуйста, ознакомьтесь с вашими результатами",
@@ -233,7 +235,8 @@ function StartTest() {
             res5: "из",
             res6: "вопросов.",
             res7: "С вами свяжутся наши администраторы. Пожалуйста, подождите...",
-            allres: "Посмотреть ваши ответы"
+            allres: "Посмотреть ваши ответы",
+            natogri:"Неправильный ответ"
         }
     ];
 
@@ -373,7 +376,7 @@ function StartTest() {
             {item.is_correct ? (
                                     <img src={correctimg} alt="To‘g‘ri" width={30} />
                                 ) : (
-                                    <p style={{ color: 'red' }}>Noto‘g‘ri javob</p>
+                                    <p style={{ color: 'red' }}>{chosenLang?.natogri}</p>
                                 )}
             </div>
           

@@ -33,6 +33,7 @@ function Hero() {
     const handleChange = () => {
         const til = language__choos.current.value;
         setLanguage(til)
+        localStorage.clear()
         localStorage.setItem("choos__lan", til)
 
     }
@@ -169,7 +170,7 @@ function Hero() {
                             <div className="logo">
                                 <img src={logo} alt="" />
                             </div>
-                            <select className='til' name="" id="" defaultValue="1" ref={language__choos} onChange={handleChange}>
+                            <select className='til' name="" id="" ref={language__choos} onChange={handleChange}>
                                 <option value="1"> Uz</option>
                                 <option value="2"> Rus</option>
                                 <option value="3"> Eng</option>
