@@ -33,6 +33,7 @@ function Hero() {
     const handleChange = () => {
         const til = language__choos.current.value;
         setLanguage(til)
+        localStorage.setItem("choos__lan", til)
 
     }
 
@@ -234,7 +235,7 @@ function Hero() {
                                 <div id="choice">
                                     <div className="time">
                                         <label htmlFor="time">{chosenLang?.log5}</label>
-                                        <select id='time' ref={time} >
+                                        <select id='time' ref={time}  required>
                                             <option value=""></option>
                                             <option value="08:00-10:00">08:00-10:00</option>
                                             <option value="10:12:00">10:00-12:00</option>
@@ -246,7 +247,7 @@ function Hero() {
                                     </div>
                                     <div className="teacher" >
                                         <label htmlFor="teacher">{chosenLang?.log6}</label>
-                                        <select id='teacher' ref={teacher_name}>
+                                        <select id='teacher' ref={teacher_name} required>
                                         <option value=""></option>
                                             {employee?.map((item, index) => {
                                                 return (

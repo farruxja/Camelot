@@ -1,6 +1,7 @@
-import React, {  useEffect, useReducer, useRef, useState } from 'react'
+import React, { useEffect, useReducer, useRef, useState } from 'react'
 import '../styles/test.css'
 import { useNavigate } from 'react-router-dom'
+import correctimg from '../img/correctImg.png'
 
 function StartTest() {
     let navigate = useNavigate()
@@ -14,7 +15,7 @@ function StartTest() {
         let fetchQuestion = await fetch(`https://dev.edu-devosoft.uz/api/test/${localStorage.getItem("choosen_test_id")}`);
         let json = await fetchQuestion.json();
         setQuestions(json.questions);
-        
+
 
 
 
@@ -22,7 +23,10 @@ function StartTest() {
             fourceUpdate()
         }
     }
- 
+
+
+
+
     const intervalRef = useRef(null);
 
     useEffect(() => {
@@ -56,7 +60,7 @@ function StartTest() {
         fetchTime();
 
         return () => clearInterval(intervalRef.current);
-      
+
     }, [ignore])
     const [totaltime, setTotaltime] = useState(null)
     const formatTime = (seconds) => {
@@ -75,16 +79,24 @@ function StartTest() {
 
 
 
-   
+
 
     const [answers, setAnswers] = useState([]);
     const handleOptionChange = (questionId, optionId) => {
         setAnswers(prevAnswers => {
             const filtered = prevAnswers.filter(ans => ans.question_id !== questionId);
-            return [...filtered, { question_id: questionId, option_id: optionId }];
+            const updatedAnswers = [...filtered, { question_id: questionId, option_id: optionId }];
+
+
+            if (updatedAnswers.length >= 1) {
+                setBtn(false);
+            }
+
+            return updatedAnswers;
         });
-        setBtn(false)
+
     };
+
     const [nat_yak, setNat_yak] = useState(true)
     const [custumer_test_id, setCustomer_test_id] = useState("")
     async function SaveResul() {
@@ -108,6 +120,8 @@ function StartTest() {
         });
         let json = await fetchQuestion.json();
         console.log(json.customer_test.id);
+     
+
         if (json?.customer_test?.id) {
             setCustomer_test_id(json.customer_test.id);
             setNat_yak(false)
@@ -136,8 +150,9 @@ function StartTest() {
             body: JSON.stringify(bodyData)
         });
         let json = await fetchQuestion.json();
-     
+
         setLevel(json)
+        console.log(json);
 
 
 
@@ -159,32 +174,107 @@ function StartTest() {
     useEffect(() => {
         const handleScroll = () => {
 
-            if (window.scrollY >= 10) {
-                timer__ab.current.classList.add('fixed-timer');
-            } else {
-                timer__ab.current.classList.remove('fixed-timer');
+            if (timer__ab.current) { // Reference mavjudligini tekshirish
+                if (window.scrollY >= 10) {
+                    timer__ab.current.classList.add('fixed-timer');
+                } else {
+                    timer__ab.current.classList.remove('fixed-timer');
+                }
             }
         };
 
         window.addEventListener("scroll", handleScroll);
-
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    
-    const [btn, setBtn]= useState(true)
+
+    const [btn, setBtn] = useState(true)
     let count = +localStorage.getItem("count")
 
 
+    const lang__btn = [
+        {
+            id: "1",
+            name: "Yakunlash",
+            name2: "Natijani ko‘rish",
+            res: "Marhamat, natijangizni ko‘rishingiz mumkin",
+            res2: "Sizning darajangiz",
+            res3: "Siz bu testni",
+            res4: "daqiqada ishlab tugatdingiz va",
+            res5: "ta savoldan",
+            res6: "tasiga to‘g‘ri javob berdingiz.",
+            res7: "Sizga adminlarimiz bog‘lanishadi. Iltimos, kuting...",
+            allres: "Javoblaringizni ko‘ring"
+        },
+        {
+            id: "2",
+            name: "Finish",
+            name2: "View Result",
+            res: "Here are your results:",
+            res2: "Your level is",
+            res3: "You completed this test in",
+            res4: "minutes and answered",
+            res5: "out of",
+            res6: "questions correctly.",
+            res7: "Our administrators will contact you. Please wait...",
+            allres: "View your answers"
+        },
+        {
+            id: "3",
+            name: "Завершить",
+            name2: "Посмотреть результат",
+            res: "Пожалуйста, ознакомьтесь с вашими результатами",
+            res2: "Ваш уровень",
+            res3: "Вы завершили тест за",
+            res4: "минут и правильно ответили на",
+            res5: "из",
+            res6: "вопросов.",
+            res7: "С вами свяжутся наши администраторы. Пожалуйста, подождите...",
+            allres: "Посмотреть ваши ответы"
+        }
+    ];
 
+    const language = localStorage.getItem("choos__lan")
+
+    const chosenLang = lang__btn.find((lang) => lang.id === language);
+
+
+
+    let allresault = useRef()
+    let alltest = useRef()
+   
+
+
+   
+    let merged = questions?.map(itemB => {
+        let results = level?.customerAnswers
+        let itemA = results?.find(a => a.question_id === itemB.id);
+        const correctOption = itemB.option.find(opt => opt.is_correct);
+        return {
+            ...itemB,
+            ...(itemA ? { 
+                your_answer_id: itemA.option_id,
+                is_correct: itemA.is_correct,
+                selected_option_text: itemB.option.find(opt => opt.id === itemA?.option_id)?.option,
+                correct_option_text: correctOption?.option // To'g'ri javob matni
+            } : {})
+        };
+    });
+     function openAllresault() {
+        if (resault.current) resault.current.classList.add("resault__none");
+        if (alltest.current) alltest.current.classList.add("alltest__none");
+        if (allresault.current) allresault.current.classList.add("allres__open");
+
+    }
     return (
         questions.length > 0 ? <section className='test__page'>
 
-         
-                <div className="min__height">
+
+            <div className="min__height">
 
 
 
+                <div className="testsection" ref={alltest}>
                     <h1 className='timer__ab' ref={timer__ab}>{formatTime(remainingTime)}</h1>
 
 
@@ -212,15 +302,15 @@ function StartTest() {
                                         )}
                                     </>
                                 ) : null}
-                            
-                             {
-                                quest?.text ? (
-                                    <>
-                                    <h3>{quest?.text.title}</h3>
-                                    <p>{quest?.text.text}</p>
-                                    </>
-                                ): null
-                               }
+
+                                {
+                                    quest?.text ? (
+                                        <>
+                                            <h3>{quest?.text.title}</h3>
+                                            <p>{quest?.text.text}</p>
+                                        </>
+                                    ) : null
+                                }
                                 <h4> <span>{index + 1} </span>{quest.question}</h4>
                                 <ul className='varyant'>
                                     {quest.option.map((item) => {
@@ -246,34 +336,52 @@ function StartTest() {
                     })}
 
 
-                   {
-                    btn === true ? null :
-                    <div className="end__button">
-                    {nat_yak === true ?
-                        <button className='end__btn' onClick={() => SaveResul()} type="button">Yakunlash</button>
-                        :
-                        <button className='end__res' onClick={openResault}>Natijani ko'rish</button>
+                    {
+                        btn === true ? null :
+                            <div className="end__button">
+                                {nat_yak === true ?
+                                    <button className='end__btn' onClick={() => SaveResul()} type="button">{chosenLang?.name}</button>
+                                    :
+                                    <button className='end__res' onClick={openResault}>{chosenLang?.name2}</button>
 
+                                }
+                            </div>
                     }
                 </div>
-                   }
 
 
-                    <div className="resault" ref={resault}>
-                        <h4>Marhamat natijangizni ko'rishingiz mumkun</h4>
-                        <div className="res__wrapper">
-                            <h2>Sizning darajangiz <strong>"{level?.result}"</strong> </h2>
-                            <p>Siz bu testni {formatTime(totaltime)} daqiqada ishlab  tugatdingiz va
-                                Siz {count} ta savoldan {level?.score} tasiga to'gri javob berdingiz.
-                            </p>
-                            <p>Sizga adminlarimiz bog'lanishadi, Iltimos kuting...</p>
-                        </div>
-                        <button onClick={closeResault}>Ok</button>
+                <div className="resault" ref={resault}>
+                    <h4>{chosenLang?.res}</h4>
+                    <div className="res__wrapper">
+                        <h2>{chosenLang?.res2} <strong>"{level?.result}"</strong> </h2>
+                        <p>{chosenLang?.res3} {formatTime(totaltime)} {chosenLang?.res4} {count} {chosenLang?.res5} {level?.score} {chosenLang?.res6}
+                        </p>
+                        <p>{chosenLang?.res7}</p>
                     </div>
 
-
+                    <button onClick={closeResault}>Ok</button>
+                    <button onClick={openAllresault}>{chosenLang?.allres}</button>
                 </div>
-            
+                <div className="allresaultdiv" ref={allresault}>
+    {merged?.map((item) => (
+        <div key={item.id}>
+            <h4>{item?.question}</h4>
+            <div className="allres__wrapper">
+            {item.correct_option_text}
+            {item.is_correct ? (
+                                    <img src={correctimg} alt="To‘g‘ri" width={30} />
+                                ) : (
+                                    <p style={{ color: 'red' }}>Noto‘g‘ri javob</p>
+                                )}
+            </div>
+          
+        </div>
+    ))}
+</div>
+
+
+            </div>
+
 
 
 
