@@ -129,6 +129,8 @@ function StartTest() {
 
 
     }
+    let allresault = useRef()
+    let alltest = useRef()
     let timer__ab = useRef()
     const [level, setLevel] = useState([])
     let resault = useRef();
@@ -159,6 +161,7 @@ function StartTest() {
 
         resault.current.classList.add("resault__open");
         timer__ab.current.classList.add("none");
+        if (alltest.current) alltest.current.classList.add("alltest__none");
 
 
 
@@ -240,8 +243,7 @@ function StartTest() {
 
 
 
-    let allresault = useRef()
-    let alltest = useRef()
+ 
    
 
 
@@ -364,7 +366,7 @@ function StartTest() {
                 </div>
                 <div className="allresaultdiv" ref={allresault}>
     {merged?.map((item) => (
-        <div key={item.id}>
+        <div key={item.id} >
             <h4>{item?.question}</h4>
             <div className="allres__wrapper">
             {item.correct_option_text}

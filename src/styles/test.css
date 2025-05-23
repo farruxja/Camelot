@@ -288,8 +288,7 @@ p, li, h3, h4{
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    min-height: 1500px;
-    height: 100%;
+    
   
 }
 .alltest__none{
@@ -312,12 +311,19 @@ p, li, h3, h4{
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: white;
+    
     z-index: 100;
-    padding: 20px;
+  
     overflow-y: auto;
-}
 
+}
+.allresaultdiv div{
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+}
 .allres__open {
     display: block;
 }
