@@ -239,7 +239,7 @@ function Hero() {
                                         <select id='time' ref={time}  required>
                                             <option value=""></option>
                                             <option value="08:00-10:00">08:00-10:00</option>
-                                            <option value="10:00:12:00">10:00-12:00</option>
+                                            <option value="10:00-12:00">10:00-12:00</option>
                                             <option value="14:00-16:00">14:00-16:00</option>
                                             <option value="16:00-18:00">16:00-18:00</option>
                                             <option value="18:30-20:30">18:30-20:30</option>
