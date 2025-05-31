@@ -141,9 +141,9 @@ function Hero() {
 
 
         const languages = [
-            { id: "1", name: "Savollar Boshlang'ich (A1) darajasidan boshlanadi va asta-sekin qiyinlashadi. Jami", name2: "ta savol bor, vaqt chegarasi", name3: "daqiqa. Gapni yakunlash uchun eng yaxshi variantni tanlang. Pastga aylantiring va savollarga javob bering!", btn: "Testni boshlash", log:"Malumotingizni kiriting", log2:"Ismingiz", log3:"Familiyangiz", log4:"Raqamingiz", log5:"O'zingizga qulay vaqt?", log6:"O'zingizga ustoz tanlang.", log7:'Kirish' },
-            { id: "2", name: "Вопросы начинаются с начального (A1) уровня и постепенно усложняются. Всего", name2: "вопросов, лимит времени — ", name3: "минут. Выберите лучший вариант для завершения предложения. Прокрутите вниз и ответьте на вопросы!", btn: "Начать тест", log:"Введите вашу информацию", log2:"Ваше имя", log3:"Ваша фамилия", log4:"Ваш номер телефона", log5:"Удобное для вас время?", log6:"Выберите наставника.", log7:'Войти' },
-            { id: "3", name: "The questions start from the beginner (A1) level and gradually become more difficult. There are a total of", name2: "questions with a time limit of", name3: "minutes. Choose the best option to complete the sentence. Scroll down and answer the questions!", btn: "Start the test", log:"Enter your information", log2:"Your name", log3:"Your surname", log4:"Your phone number", log5:"Convenient time for you?", log6:"Choose your mentor.", log7:'Login' }
+            { id: "1", name: "Savollar Boshlang'ich (A1) darajasidan boshlanadi va asta-sekin qiyinlashadi. Jami", name2: "ta savol bor, vaqt chegarasi", name3: "daqiqa. Gapni yakunlash uchun eng yaxshi variantni tanlang. Pastga aylantiring va savollarga javob bering!", btn: "Testni boshlash", log:"Malumotingizni kiriting", log2:"Ismingiz", log3:"Familiyangiz", log4:"Raqamingiz", log5:"O'zingizga qulay vaqt?", log6:"O'zingizga ustoz tanlang.", log7:'Kirish', def_time:"Hohlagan vaqt", def__teacher:"Hohlagan ustoz" },
+            { id: "2", name: "Вопросы начинаются с начального (A1) уровня и постепенно усложняются. Всего", name2: "вопросов, лимит времени — ", name3: "минут. Выберите лучший вариант для завершения предложения. Прокрутите вниз и ответьте на вопросы!", btn: "Начать тест", log:"Введите вашу информацию", log2:"Ваше имя", log3:"Ваша фамилия", log4:"Ваш номер телефона", log5:"Удобное для вас время?", log6:"Выберите наставника.", log7:'Войти' , def_time:"В любое время", def__teacher:"Любой учитель"},
+            { id: "3", name: "The questions start from the beginner (A1) level and gradually become more difficult. There are a total of", name2: "questions with a time limit of", name3: "minutes. Choose the best option to complete the sentence. Scroll down and answer the questions!", btn: "Start the test", log:"Enter your information", log2:"Your name", log3:"Your surname", log4:"Your phone number", log5:"Convenient time for you?", log6:"Choose your mentor.", log7:'Login', def_time:"Anytime", def__teacher:"Any teacher" }
         ];
 
 
@@ -159,7 +159,7 @@ function Hero() {
 
 
         return (
-            <section className='hero'>
+            employee && employee.length > 0 ?  (<section className='hero'>
                 {/* tetsni boshlash qismi */}
 
 
@@ -235,9 +235,9 @@ function Hero() {
                                 />
                                 <div id="choice">
                                     <div className="time">
-                                        <label htmlFor="time">{chosenLang?.log5}</label>
+                                        <label  htmlFor="time">{chosenLang?.log5}</label>
                                         <select id='time' ref={time}  required>
-                                            <option value=""></option>
+                                            <option value="hohlagan vaqt">{chosenLang?.def_time}</option>
                                             <option value="08:00-10:00">08:00-10:00</option>
                                             <option value="10:00-12:00">10:00-12:00</option>
                                             <option value="14:00-16:00">14:00-16:00</option>
@@ -249,7 +249,7 @@ function Hero() {
                                     <div className="teacher" >
                                         <label htmlFor="teacher">{chosenLang?.log6}</label>
                                         <select id='teacher' ref={teacher_name} required>
-                                        <option value=""></option>
+                                        <option value="hohlagan ustoz">{chosenLang?.def__teacher}</option>
                                             {employee?.map((item, index) => {
                                                 return (
                                                     <option key={index} value={item?.full_name}>{item?.full_name}</option>
@@ -301,7 +301,9 @@ function Hero() {
 
                 </div>
 
-            </section>
+            </section> ):(<div className="load">
+                <span className='loader'></span>
+            </div>)
         )
     }
 

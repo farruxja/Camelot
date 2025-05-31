@@ -316,7 +316,7 @@ function StartTest() {
                                         </>
                                     ) : null
                                 }
-                                <h4> <span>{index + 1} </span>{quest.question}</h4>
+                                <h4> <div className="skil"><span>{index + 1} </span></div>{quest.question}</h4>
                                 <ul className='varyant'>
                                     {quest.option.map((item) => {
                                         return (
@@ -382,6 +382,7 @@ function StartTest() {
           
         </div>
     ))}
+    <button onClick={closeResault}>Ok</button>
 </div>
 
 

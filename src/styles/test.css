@@ -89,7 +89,13 @@ p, li, h3, h4{
     gap: 10px;
     width: 100%;
 }
-
+.skil{
+    width: 30px;
+}
+.testsection{
+    padding-left: 10px;
+    padding-right: 10px;
+}
 .media__test {
     display: flex;
     align-items: center;
@@ -251,6 +257,20 @@ p, li, h3, h4{
     color: white;
     background: linear-gradient(to right, #1D0F91, #4A7CFF);
     margin-top: 50px;
+}
+
+.allresaultdiv button {
+    padding: 10px 15px;
+    font-size: 21px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+    color: white;
+    background: linear-gradient(to right, #1D0F91, #4A7CFF);
+    margin-top: 50px;
+    margin-bottom: 20px;
 }
 
 .resault button:nth-of-type(2) {
