@@ -239,10 +239,11 @@ function StartTest() {
             natogri:"Неправильный ответ"
         }
     ];
+    const[langover, setLangover]= useState("1")
+    const language = localStorage.getItem("choos__lan")
+setLangover(language)
 
-    const language = localStorage.getItem("choos__lan" || 1)
-
-    const chosenLang = lang__btn.find((lang) => lang.id === language);
+    const chosenLang = lang__btn.find((lang) => lang.id === langover);
 
 
 
