@@ -33,7 +33,7 @@ function Hero() {
     const handleChange = () => {
         const til = language__choos.current.value;
         setLanguage(til)
-        localStorage.clear()
+      
         localStorage.setItem("choos__lan", til)
 
     }

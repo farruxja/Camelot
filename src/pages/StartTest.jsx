@@ -240,7 +240,7 @@ function StartTest() {
         }
     ];
 
-    const language = localStorage.getItem("choos__lan" || "1")
+    const language = localStorage.getItem("choos__lan" || 1)
 
     const chosenLang = lang__btn.find((lang) => lang.id === language);
 
