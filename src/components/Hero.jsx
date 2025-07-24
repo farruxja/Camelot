@@ -15,7 +15,7 @@ function Hero() {
     let teacher_name = useRef()
     const [employee, setEmployee] = useState(null)
 
-    const [question, setQuestion] = useState()
+    const [question, setQuestion] = useState([])
 
 
 
@@ -42,6 +42,9 @@ function Hero() {
 
         getEmployee()
         getQuestion()
+        
+
+
 
     }, [])
 
@@ -106,12 +109,8 @@ function Hero() {
 
 
 
-
-
-
-
     async function getQuestion() {
-        let fetchQuestion = await fetch("https://dev.edu-devosoft.uz/api/test");
+        let fetchQuestion = await fetch("https://dev.edu-devosoft.uz/api/test/getSchoolId/1");
         let json = await fetchQuestion.json();
         setQuestion(json)
 

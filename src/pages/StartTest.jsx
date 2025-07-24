@@ -30,6 +30,7 @@ function StartTest() {
     const intervalRef = useRef(null);
 
     useEffect(() => {
+        
         const now_time = new Date().toISOString();
         localStorage.setItem('start_time', now_time);
         getQuestions();
@@ -60,7 +61,7 @@ function StartTest() {
         fetchTime();
 
         return () => clearInterval(intervalRef.current);
-
+       
     }, [ignore])
     const [totaltime, setTotaltime] = useState(null)
     const formatTime = (seconds) => {
@@ -100,35 +101,48 @@ function StartTest() {
     const [nat_yak, setNat_yak] = useState(true)
     const [custumer_test_id, setCustomer_test_id] = useState("")
     async function SaveResul() {
-        handleFinish()
-
-
+        handleFinish();
+    
         let now = new Date().toISOString();
         let customer = {
             customer_id: +localStorage.getItem('customerId'),
             test_id: +localStorage.getItem("choosen_test_id"),
             started_at: localStorage.getItem('start_time'),
-            finished_at: now
+            school_id: 1,
+            finished_at: now,
+           
         }
-
-        let fetchQuestion = await fetch(`https://dev.edu-devosoft.uz/api/customer-test`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(customer)
-        });
-        let json = await fetchQuestion.json();
-        console.log(json.customer_test.id);
-     
-
-        if (json?.customer_test?.id) {
-            setCustomer_test_id(json.customer_test.id);
-            setNat_yak(false)
+       
+    
+        try {
+            let fetchQuestion = await fetch(`https://dev.edu-devosoft.uz/api/customer-test/`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(customer)
+            });
+    
+            if (!fetchQuestion.ok) {
+                // server 500 yoki boshqa status bersa
+                throw new Error(`Server error: ${fetchQuestion.status}`);
+            }
+    
+            let json = await fetchQuestion.json();
+    
+            if (json?.customer_test?.id) {
+                setCustomer_test_id(json.customer_test.id);
+                setNat_yak(false);
+            } else {
+                console.error("Noto‘g‘ri response:", json);
+                alert("Serverdan noto‘g‘ri ma'lumot keldi. Iltimos, qayta urinib ko‘ring.");
+            }
+    
+        } catch (error) {
+            console.error("Xatolik:", error);
+            alert("Serverda muammo bor yoki noto‘g‘ri so‘rov. Iltimos, keyinroq urinib ko‘ring.");
         }
-
-
-    }
+    }   
     let allresault = useRef()
     let alltest = useRef()
     let timer__ab = useRef()
