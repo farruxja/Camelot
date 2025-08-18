@@ -130,6 +130,7 @@ function Hero() {
 
         localStorage.setItem('choosen_test_id', id);
         localStorage.setItem('count', count);
+       
 
 
         setSub_id(subject_id)
@@ -166,7 +167,7 @@ function Hero() {
 
 
             <div className="container">
-                <div className="header">
+            <div className="header">
                     <div className="header__wrapper">
                         <div className="logo">
                             <img src={logo} alt="" />

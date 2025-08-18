@@ -7,6 +7,8 @@ import ErrorPage from './pages/ErrorPage';
 import TestPage from './pages/TestPage';
 
 import StartTest from './pages/StartTest';
+import CreateCustomer from './pages/CreateCustomer';
+import AboutPage from './pages/AboutPage';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -22,7 +24,14 @@ const myRouter = createBrowserRouter([{
     {
       path:'/test',
       element:<StartTest/>,
-    } 
+    } ,
+    {
+      path:"/leads",
+      element:<CreateCustomer/>
+    },{
+      path:"/about",
+      element:<AboutPage/>
+    }
   ]
 }])
 root.render(
