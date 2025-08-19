@@ -40,9 +40,9 @@ function AboutPage() {
                 @camelot_lc
               </h4>
             </a>
-            <a href="tel:+998500740747">
+            <a href="tel:+998336009595">
               <img data-aos="fade-up" src={phone} alt="" />
-              <h4 data-aos="fade-up">+998-50-074-07-47</h4>
+              <h4 data-aos="fade-up">+998-(33)600-95-95</h4>
             </a>
             <NavLink to={"/leads"}>
 <img data-aos="fade-up" src={login} alt="" />
