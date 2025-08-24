@@ -62,7 +62,8 @@ async function getSubjects(){
 
 
 // creating customer function //
-const [username, setUsername]= useState()
+
+const [success, setSuccess] = useState(false)
 async function createCustomer(e){
   e.preventDefault()
 
@@ -74,21 +75,28 @@ async function createCustomer(e){
     teacher_name: teacher.current.value,
   }
 
-  let res = await fetch("https://dev.edu-devosoft.uz/api/customer/login",{
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json"
-    },
-    body:JSON.stringify(ready)
-  });     
-  let data = await res.json();   
-  console.log(data);
+let res = await fetch("https://dev.edu-devosoft.uz/api/customer/login", {
+  method:"POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(ready)
+});
+let data = await res.json();
+console.log(data);
 
-  setUsername(data?.full_name);
+  setSuccess(true);
 
+  name.current.value = "";
+  lastname.current.value = "";
+  phone_number.current.value = "+998"; // default qiymat
+  time.current.value = "hohlagan vaqt"; 
+  teacher.current.value = "hohlagan ustoz";
+  choosen__sub.current.value = "2"; // default fan
 
-
-   
+  setTimeout(() => {
+    setSuccess(false);
+  }, 3000);
 
 
 }
@@ -97,9 +105,10 @@ async function createCustomer(e){
 
       <div className="container">
 
-        <div className="massage">
-          <h1>{username}</h1>
-        </div>
+      <div className={`massage ${success ? "open__massage" : ""}`}>
+            <h1>{name.current?.value}, {chosenLang?.massage}</h1>
+          </div>
+          <div className={`massage__modal ${success ? "massage__open__modal": ""}`}></div>
       <div className="header">
                     <div className="header__wrapper">
                         <div className="logo">
