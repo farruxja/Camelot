@@ -29,9 +29,9 @@ function AboutPage() {
 
         <div className="about__links">
 
-            <a href="https://t.me/ruslan_cm1">
+            <a href="https://t.me/Camelot_LC_Admin">
             <img data-aos="fade-up" src={telegram} alt="" />
-            <h4 data-aos="fade-up">@ruslan_cm1</h4>
+            <h4 data-aos="fade-up">@Camelot_LC_Admin</h4>
             </a>
 
             <a href="https://www.instagram.com/camelot_lc/">
