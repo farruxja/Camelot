@@ -51,7 +51,7 @@ async function getEmployee(){
 //get all subjects //
 const [subjects, setSubjects]= useState([])
 async function getSubjects(){
-  let fetchSubjects = await fetch("https://dev.edu-devosoft.uz/api/subject/1")
+  let fetchSubjects = await fetch("https://dev.edu-devosoft.uz/api/subject/6")
   let json = await fetchSubjects.json()
   setSubjects(json)
 
