@@ -110,7 +110,7 @@ function Hero() {
 
 
     async function getQuestion() {
-        let fetchQuestion = await fetch("https://dev.edu-devosoft.uz/api/test/getSchoolId/1");
+        let fetchQuestion = await fetch("https://dev.edu-devosoft.uz/api/test/getSchoolId/6");
         let json = await fetchQuestion.json();
         setQuestion(json)
 
