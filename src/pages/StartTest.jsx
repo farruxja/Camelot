@@ -108,14 +108,14 @@ function StartTest() {
             customer_id: +localStorage.getItem('customerId'),
             test_id: +localStorage.getItem("choosen_test_id"),
             started_at: localStorage.getItem('start_time'),
-            school_id: 1,
+            school_id: 6,
             finished_at: now,
            
         }
        
     
         try {
-            let fetchQuestion = await fetch(`https://dev.edu-devosoft.uz/api/customer-test/`, {
+            let fetchQuestion = await fetch(`https://dev.edu-devosoft.uz/api/customer-test/ `, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
