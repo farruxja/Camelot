@@ -1,421 +1,231 @@
-import React, { useEffect, useReducer, useRef, useState } from 'react'
-import '../styles/test.css'
-import { useNavigate } from 'react-router-dom'
-import correctimg from '../img/correctImg.png'
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function StartTest() {
-    let navigate = useNavigate()
-    const [questions, setQuestions] = useState([])
-    const [ignore, fourceUpdate] = useReducer(x => x + 1)
-    const [remainingTime, setRemainingTime] = useState(0);
+  const navigate = useNavigate();
 
-    const [time, setTime] = useState(null)
+  const [questions, setQuestions] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedAnswers, setSelectedAnswers] = useState({});
+  const [remainingTime, setRemainingTime] = useState(0);
 
-    async function getQuestions() {
-        let fetchQuestion = await fetch(`https://dev.edu-devosoft.uz/api/test/${localStorage.getItem("choosen_test_id")}`);
-        let json = await fetchQuestion.json();
-        setQuestions(json.questions);
+  const intervalRef = useRef(null);
 
+  /* ================== FETCH QUESTIONS + TIME ================== */
+  useEffect(() => {
+    async function fetchTest() {
+      const res = await fetch(
+        `https://dev.edu-devosoft.uz/api/test/${localStorage.getItem("choosen_test_id")}`
+      );
+      const json = await res.json();
 
+      setQuestions(json.questions || []);
+      setRemainingTime(json.time * 60);
 
-
-        if (json.questions) {
-            fourceUpdate()
-        }
+      localStorage.setItem("start_time", new Date().toISOString());
     }
 
+    fetchTest();
+  }, []);
 
+  /* ================== TIMER ================== */
+  useEffect(() => {
+    if (remainingTime <= 0) return;
 
-
-    const intervalRef = useRef(null);
-
-    useEffect(() => {
-        
-        const now_time = new Date().toISOString();
-        localStorage.setItem('start_time', now_time);
-        getQuestions();
-        async function fetchTime() {
-            let response = await fetch(`https://dev.edu-devosoft.uz/api/test/${localStorage.getItem("choosen_test_id")}`);
-            let json = await response.json();
-
-            setTime(json.time)
-            if (json.time) {
-                setRemainingTime(json.time * 60); // daqiqani soniyaga o'tkazamiz
-
-                // Timer start
-                if (intervalRef.current) {
-                    clearInterval(intervalRef.current); // eski intervalni to'xtatish
-                }
-
-                intervalRef.current = setInterval(() => {
-                    setRemainingTime((prev) => {
-                        if (prev <= 1) {
-                            clearInterval(intervalRef.current);
-                            return 0;
-                        }
-                        return prev - 1;
-                    });
-                }, 1000);
-            }
+    intervalRef.current = setInterval(() => {
+      setRemainingTime((prev) => {
+        if (prev <= 1) {
+          clearInterval(intervalRef.current);
+          return 0;
         }
-        fetchTime();
+        return prev - 1;
+      });
+    }, 1000);
 
-        return () => clearInterval(intervalRef.current);
-       
-    }, [ignore])
-    const [totaltime, setTotaltime] = useState(null)
-    const formatTime = (seconds) => {
-        const m = Math.floor(seconds / 60).toString().padStart(2, '0');
-        const s = (seconds % 60).toString().padStart(2, '0');
-        return `${m}:${s}`;
-    };
-    const handleFinish = () => {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-        const totalTime = (time * 60) - remainingTime;
-        setTotaltime(totalTime);
-    };
+    return () => clearInterval(intervalRef.current);
+  }, [remainingTime]);
 
+  const formatTime = (sec) => {
+    const m = String(Math.floor(sec / 60)).padStart(2, "0");
+    const s = String(sec % 60).padStart(2, "0");
+    return `${m}:${s}`;
+  };
 
+  /* ================== ANSWER SELECT ================== */
+  const selectOption = (questionId, optionId) => {
+    setSelectedAnswers((prev) => ({
+      ...prev,
+      [questionId]: optionId,
+    }));
+  };
 
+  const handleWritingChange = (questionId, value) => {
+    setSelectedAnswers((prev) => ({
+      ...prev,
+      [questionId]: value,
+    }));
+  };
 
+  /* ================== SAVE RESULT ================== */
+  const finishTest = async () => {
+    clearInterval(intervalRef.current);
 
-
-
-    const [answers, setAnswers] = useState([]);
-    const handleOptionChange = (questionId, optionId) => {
-        setAnswers(prevAnswers => {
-            const filtered = prevAnswers.filter(ans => ans.question_id !== questionId);
-            const updatedAnswers = [...filtered, { question_id: questionId, option_id: optionId }];
-
-
-            if (updatedAnswers.length >= 1) {
-                setBtn(false);
-            }
-
-            return updatedAnswers;
-        });
-
+    const customerTestBody = {
+      customer_id: +localStorage.getItem("customerId"),
+      test_id: +localStorage.getItem("choosen_test_id"),
+      started_at: localStorage.getItem("start_time"),
+      finished_at: new Date().toISOString(),
+      school_id: 6,
     };
 
-    const [nat_yak, setNat_yak] = useState(true)
-    const [custumer_test_id, setCustomer_test_id] = useState("")
-    async function SaveResul() {
-        handleFinish();
-    
-        let now = new Date().toISOString();
-        let customer = {
-            customer_id: +localStorage.getItem('customerId'),
-            test_id: +localStorage.getItem("choosen_test_id"),
-            started_at: localStorage.getItem('start_time'),
-            school_id: 6,
-            finished_at: now,
-           
+    const res = await fetch(
+      "https://dev.edu-devosoft.uz/api/customer-test/",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(customerTestBody),
+      }
+    );
+
+    const json = await res.json();
+    const customer_test_id = json?.customer_test?.id;
+
+    if (!customer_test_id) return alert("Xatolik!");
+
+    const answersPayload = questions
+      .map((q) => {
+        if (q.type === "test") {
+          return {
+            question_id: q.id,
+            option_id: selectedAnswers[q.id],
+            customer_test_id,
+          };
         }
-       
-    
-        try {
-            let fetchQuestion = await fetch(`https://dev.edu-devosoft.uz/api/customer-test/ `, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(customer)
-            });
-    
-            if (!fetchQuestion.ok) {
-                // server 500 yoki boshqa status bersa
-                throw new Error(`Server error: ${fetchQuestion.status}`);
-            }
-    
-            let json = await fetchQuestion.json();
-    
-            if (json?.customer_test?.id) {
-                setCustomer_test_id(json.customer_test.id);
-                setNat_yak(false);
-            } else {
-                console.error("Noto‘g‘ri response:", json);
-                alert("Serverdan noto‘g‘ri ma'lumot keldi. Iltimos, qayta urinib ko‘ring.");
-            }
-    
-        } catch (error) {
-            console.error("Xatolik:", error);
-            alert("Serverda muammo bor yoki noto‘g‘ri so‘rov. Iltimos, keyinroq urinib ko‘ring.");
+
+        if (q.type === "writing") {
+          return {
+            question_id: q.id,
+            text: selectedAnswers[q.id],
+            customer_test_id,
+          };
         }
-    }   
-    let allresault = useRef()
-    let alltest = useRef()
-    let timer__ab = useRef()
-    const [level, setLevel] = useState([])
-    let resault = useRef();
-    async function openResault() {
 
+        return null;
+      })
+      .filter(Boolean);
 
-        let ready = answers.map(item => ({
-            ...item,
-            customer_test_id: custumer_test_id  // yangi key va bir xil qiymat
-        }));
-        const bodyData = {
-            list: ready,
-        };
-        let fetchQuestion = await fetch(`https://dev.edu-devosoft.uz/api/customer-answer`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(bodyData)
-        });
-        let json = await fetchQuestion.json();
-
-        setLevel(json)
-        console.log(json);
-
-
-
-
-        resault.current.classList.add("resault__open");
-        timer__ab.current.classList.add("none");
-        if (alltest.current) alltest.current.classList.add("alltest__none");
-
-
-
-    }
-
-    function closeResault() {
-
-        navigate("/")
-    }
-
-
-
-    useEffect(() => {
-        const handleScroll = () => {
-
-            if (timer__ab.current) { // Reference mavjudligini tekshirish
-                if (window.scrollY >= 10) {
-                    timer__ab.current.classList.add('fixed-timer');
-                } else {
-                    timer__ab.current.classList.remove('fixed-timer');
-                }
-            }
-        };
-
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
-
-
-    const [btn, setBtn] = useState(true)
-    let count = +localStorage.getItem("count")
-
-
-    const lang__btn = [
-        {
-            id: "1",
-            name: "Yakunlash",
-            name2: "Natijani ko‘rish",
-            res: "Marhamat, natijangizni ko‘rishingiz mumkin",
-            res2: "Sizning darajangiz",
-            res3: "Siz bu testni",
-            res4: "daqiqada ishlab tugatdingiz va",
-            res5: "ta savoldan",
-            res6: "tasiga to‘g‘ri javob berdingiz.",
-            res7: "Sizga adminlarimiz bog‘lanishadi. Iltimos, kuting...",
-            allres: "Javoblaringizni ko‘ring",
-            natogri:"Natog'ri javob"
-        },
-        {
-            id: "3",
-            name: "Finish",
-            name2: "View Result",
-            res: "Here are your results:",
-            res2: "Your level is",
-            res3: "You completed this test in",
-            res4: "minutes and answered",
-            res5: "out of",
-            res6: "questions correctly.",
-            res7: "Our administrators will contact you. Please wait...",
-            allres: "View your answers",
-            natogri:"Wrong answer"
-        },
-        {
-            id: "2",
-            name: "Завершить",
-            name2: "Посмотреть результат",
-            res: "Пожалуйста, pознакомьтесь с вашими результатами",
-            res2: "Ваш уровень",
-            res3: "Вы завершили тест за",
-            res4: "минут и правильно ответили на",
-            res5: "из",
-            res6: "вопросов.",
-            res7: "С вами свяжутся наши администраторы. Пожалуйста, подождите...",
-            allres: "Посмотреть ваши ответы",
-            natogri:"Неправильный ответ"
-        }
-    ];
-    
-    const language = localStorage.getItem("choos__lan")
-    
-
-    const chosenLang = lang__btn.find((lang) => lang.id === language);
-
-
-
- 
-   
-
-
-   
-    let merged = questions?.map(itemB => {
-        let results = level?.customerAnswers
-        let itemA = results?.find(a => a.question_id === itemB.id);
-        const correctOption = itemB.option.find(opt => opt.is_correct);
-        return {
-            ...itemB,
-            ...(itemA ? { 
-                your_answer_id: itemA.option_id,
-                is_correct: itemA.is_correct,
-                selected_option_text: itemB.option.find(opt => opt.id === itemA?.option_id)?.option,
-                correct_option_text: correctOption?.option // To'g'ri javob matni
-            } : {})
-        };
+    await fetch("https://dev.edu-devosoft.uz/api/customer-answer", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ list: answersPayload }),
     });
-     function openAllresault() {
-        if (resault.current) resault.current.classList.add("resault__none");
-        if (alltest.current) alltest.current.classList.add("alltest__none");
-        if (allresault.current) allresault.current.classList.add("allres__open");
 
-    }
+    navigate("/");
+  };
+
+  if (!questions.length)
     return (
-        questions.length > 0 ? <section className='test__page'>
+      <div className="flex items-center justify-center h-screen">
+        <span className="animate-spin w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full" />
+      </div>
+    );
 
+  const currentQuestion = questions[currentIndex];
+  const progress = ((currentIndex + 1) / questions.length) * 100;
 
-            <div className="min__height">
-
-
-
-                <div className="testsection" ref={alltest}>
-                    <h1 className='timer__ab' ref={timer__ab}>{formatTime(remainingTime)}</h1>
-
-
-
-                    {questions?.map((quest, index) => {
-
-                        return (
-                            <div key={quest.id} className='test__test'>
-                                {quest.file ? (
-                                    <>
-                                        {quest.file.endsWith(".mp3") || quest.file.endsWith(".wav") ? (
-                                            <audio className='media__test' controls>
-                                                <source src={`https://dev.edu-devosoft.uz/${quest.file}`} type="audio/mpeg" />
-                                                Your browser does not support the audio element.
-                                            </audio>
-                                        ) : quest.file.endsWith(".mp4") || quest.file.endsWith(".webm") ? (
-                                            <video className='media__test' controls>
-                                                <source src={`https://dev.edu-devosoft.uz/${quest.file}`} type="video/mp4" />
-                                                Your browser does not support the video tag.
-                                            </video>
-                                        ) : quest.file.endsWith(".jpg") || quest.file.endsWith(".png") || quest.file.endsWith(".jpeg") ? (
-                                            <img className='media__test' src={`https://dev.edu-devosoft.uz/${quest.file}`} alt='' />
-                                        ) : (
-                                            <p>Fayl formati qo‘llab-quvvatlanmaydi.</p>
-                                        )}
-                                    </>
-                                ) : null}
-
-                                {
-                                    quest?.text ? (
-                                        <>
-                                            <h3>{quest?.text.title}</h3>
-                                            <p>{quest?.text.text}</p>
-                                        </>
-                                    ) : null
-                                }
-                                <h4> <div className="skil"><span>{index + 1} </span></div>{quest.question}</h4>
-                                <ul className='varyant'>
-                                    {quest.option.map((item) => {
-                                        return (
-                                            <div key={item.id}>
-                                                <label >
-
-                                                    <input
-                                                        value={item.id} type="radio" name={item.question_id} id=""
-                                                        onChange={() => handleOptionChange(quest.id, item.id)}
-                                                    />
-
-                                                    <li key={item.id}> {item.option}</li>
-                                                </label>
-                                            </div>
-
-                                        )
-                                    })}
-                                </ul>
-
-                            </div>
-                        )
-                    })}
-
-
-                    {
-                        btn === true ? null :
-                            <div className="end__button">
-                                {nat_yak === true ?
-                                    <button className='end__btn' onClick={() => SaveResul()} type="button">{chosenLang?.name}</button>
-                                    :
-                                    <button className='end__res' onClick={openResault}>{chosenLang?.name2}</button>
-
-                                }
-                            </div>
-                    }
-                </div>
-
-
-                <div className="resault" ref={resault}>
-                    <h4>{chosenLang?.res}</h4>
-                    <div className="res__wrapper">
-                        <h2>{chosenLang?.res2} <strong>"{level?.result}"</strong> </h2>
-                        <p>{chosenLang?.res3} {formatTime(totaltime)} {chosenLang?.res4} {count} {chosenLang?.res5} {level?.score} {chosenLang?.res6}
-                        </p>
-                        <p>{chosenLang?.res7}</p>
-                    </div>
-
-                    <button onClick={closeResault}>Ok</button>
-                    <button onClick={openAllresault}>{chosenLang?.allres}</button>
-                </div>
-                <div className="allresaultdiv" ref={allresault}>
-    {merged?.map((item) => (
-        <div key={item.id} >
-            <h4>{item?.question}</h4>
-            <div className="allres__wrapper">
-            {item.correct_option_text}
-            {item.is_correct ? (
-                                    <img src={correctimg} alt="To‘g‘ri" width={30} />
-                                ) : (
-                                    <p style={{ color: 'red' }}>{chosenLang?.natogri}</p>
-                                )}
-            </div>
-          
+  return (
+    <div className="min-h-screen bg-slate-50 flex flex-col">
+      {/* ================= HEADER ================= */}
+      <div className="sticky top-0 bg-white z-50 border-b px-6 py-4">
+        <div className="max-w-5xl mx-auto flex justify-between items-center">
+          <div className="font-bold text-[#2D3494]">
+            Savol {currentIndex + 1} / {questions.length}
+          </div>
+          <div className="font-mono text-lg text-red-600">
+            {formatTime(remainingTime)}
+          </div>
         </div>
-    ))}
-    <button onClick={closeResault}>Ok</button>
-</div>
 
-
-            </div>
-
-
-
-
-
-
-
-
-
-
-        </section> : <div className="load">
-            <span className="loader"></span>
+        <div className="max-w-5xl mx-auto mt-3 h-2 bg-slate-200 rounded">
+          <div
+            className="h-full bg-gradient-to-r from-[#2D3494] to-[#4351DB] rounded transition-all"
+            style={{ width: `${progress}%` }}
+          />
         </div>
-    )
+      </div>
+
+      {/* ================= QUESTION ================= */}
+      <div className="flex-grow flex items-center justify-center px-6">
+        <div className="max-w-3xl w-full bg-white rounded-3xl p-8 shadow">
+          <h2 className="text-2xl font-extrabold mb-8">
+            {currentQuestion.question}
+          </h2>
+
+          <div className="space-y-4">
+            {/* ===== TEST ===== */}
+            {currentQuestion.type === "test" &&
+              currentQuestion.option.map((opt, i) => (
+                <button
+                  key={opt.id}
+                  onClick={() => selectOption(currentQuestion.id, opt.id)}
+                  className={`w-full p-5 rounded-2xl border-2 flex justify-between items-center transition ${
+                    selectedAnswers[currentQuestion.id] === opt.id
+                      ? "border-[#2D3494] bg-blue-50"
+                      : "border-slate-200 hover:bg-slate-50"
+                  }`}
+                >
+                  <span className="font-bold">
+                    {String.fromCharCode(65 + i)}. {opt.option}
+                  </span>
+                  {selectedAnswers[currentQuestion.id] === opt.id && (
+                    <span className="w-6 h-6 bg-[#2D3494] rounded-full" />
+                  )}
+                </button>
+              ))}
+
+            {/* ===== WRITING ===== */}
+            {currentQuestion.type === "writing" && (
+              <textarea
+                placeholder="Javobingizni shu yerga yozing..."
+                value={selectedAnswers[currentQuestion.id] || ""}
+                onChange={(e) =>
+                  handleWritingChange(currentQuestion.id, e.target.value)
+                }
+                className="w-full min-h-[160px] p-5 border-2 border-slate-300 rounded-2xl focus:outline-none focus:border-[#2D3494]"
+              />
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* ================= NAV ================= */}
+      <div className="flex justify-between px-6 py-6 max-w-5xl mx-auto w-full">
+        <button
+          disabled={currentIndex === 0}
+          onClick={() => setCurrentIndex((p) => p - 1)}
+          className="px-8 py-3 rounded-xl bg-white border disabled:opacity-40"
+        >
+          Oldingi
+        </button>
+
+        {currentIndex === questions.length - 1 ? (
+          <button
+            onClick={finishTest}
+            className="px-10 py-3 rounded-xl bg-red-600 text-white font-bold"
+          >
+            Yakunlash
+          </button>
+        ) : (
+          <button
+            onClick={() => setCurrentIndex((p) => p + 1)}
+            className="px-10 py-3 rounded-xl bg-[#2D3494] text-white font-bold"
+          >
+            Keyingisi
+          </button>
+        )}
+      </div>
+    </div>
+  );
 }
 
-export default StartTest
+export default StartTest;

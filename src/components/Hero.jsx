@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import '../styles/hero.css'
 import { useNavigate } from 'react-router-dom'
-import logo from "../img/camelor_loge.png"
+
+import { Logo } from './Contaxt'
 
 function Hero() {
 
@@ -56,13 +57,17 @@ function Hero() {
         setEmployee(json)
     }
 
-
+let rule = useRef()  
     function openTest() {
         start.current.classList.add("start")
+        rule.current.classList.add("open__rule")
+
+
+
+    }
+    function openRegister() {
+        rule.current.classList.remove("open__rule")
         login.current.classList.add("login__open")
-
-
-
     }
 
 
@@ -144,9 +149,9 @@ function Hero() {
 
 
     const languages = [
-        { id: "1", name: "Savollar Boshlang'ich (A1) darajasidan boshlanadi va asta-sekin qiyinlashadi. Jami", name2: "ta savol bor, vaqt chegarasi", name3: "daqiqa. Gapni yakunlash uchun eng yaxshi variantni tanlang. Pastga aylantiring va savollarga javob bering!", btn: "Testni boshlash", log: "Malumotingizni kiriting", log2: "Ismingiz", log3: "Familiyangiz", log4: "Raqamingiz", log5: "O'zingizga qulay vaqt?", log6: "O'zingizga ustoz tanlang.", log7: 'Kirish', def_time: "Hohlagan vaqt", def__teacher: "Hohlagan ustoz" },
-        { id: "2", name: "Вопросы начинаются с начального (A1) уровня и постепенно усложняются. Всего", name2: "вопросов, лимит времени — ", name3: "минут. Выберите лучший вариант для завершения предложения. Прокрутите вниз и ответьте на вопросы!", btn: "Начать тест", log: "Введите вашу информацию", log2: "Ваше имя", log3: "Ваша фамилия", log4: "Ваш номер телефона", log5: "Удобное для вас время?", log6: "Выберите наставника.", log7: 'Войти', def_time: "В любое время", def__teacher: "Любой учитель" },
-        { id: "3", name: "The questions start from the beginner (A1) level and gradually become more difficult. There are a total of", name2: "questions with a time limit of", name3: "minutes. Choose the best option to complete the sentence. Scroll down and answer the questions!", btn: "Start the test", log: "Enter your information", log2: "Your name", log3: "Your surname", log4: "Your phone number", log5: "Convenient time for you?", log6: "Choose your mentor.", log7: 'Login', def_time: "Anytime", def__teacher: "Any teacher" }
+        { id: "1", name: " Bilimingizni jahon standartlari asosida tekshiring va kelajak sari birinchi qadamni tashlang.", name2: "ta Savol", name3: "A1 darajadan boshlanib, asta-sekin qiyinlashadi.",name4:"Daqiqa",name5:"Vaqtni to'g'ri taqsimlang va natijaga erishing.",name6:"Natijalar", name7:"Test yakunida batafsil tahlilga ega bo'ling.",  btn: "Testni boshlash", log: "Malumotingizni kiriting", log2: "Ismingiz", log3: "Familiyangiz", log4: "Raqamingiz", log5: "O'zingizga qulay vaqt?", log6: "O'zingizga ustoz tanlang.", log7: 'Kirish', def_time: "Hohlagan vaqt", def__teacher: "Hohlagan ustoz" },
+        { id: "2", name: " Проверьте свои знания по мировым стандартам и сделайте первый шаг в будущее.", name2: "вопросы", name3: "Начиная с уровня A1, постепенно усложняясь.",name4:"Минуты",name5:"Правильно распределите время и достигните результата.",name6:"Результаты", name7:"Получите подробный анализ в конце теста.", btn: "Начать тест", log: "Введите вашу информацию", log2: "Ваше имя", log3: "Ваша фамилия", log4: "Ваш номер", log5: "Удобное для вас время?", log6: "Выберите себе учителя.", log7: 'Войти', def_time: "Любое время", def__teacher: "Любой учитель" },
+        { id: "3", name: " Test your knowledge based on global standards and take the first step towards the future.", name2: "Questions", name3: "Starting from A1 level, gradually getting more difficult.",name4:"Minutes",name5:"Manage your time well and achieve results.",name6:"Results", name7:"Get a detailed analysis at the end of the test.", btn: "Start the test", log: "Enter your information", log2: "Your name", log3: "Your surname", log4: "Your number", log5: "A convenient time for you?", log6: "Choose a teacher for yourself.", log7: 'Login', def_time: "Any time", def__teacher: "Any teacher" },
     ];
 
 
@@ -159,7 +164,7 @@ function Hero() {
 
 
 
-
+    
 
     return (
         employee && employee.length > 0 ? (<section className='hero'>
@@ -170,7 +175,8 @@ function Hero() {
             <div className="header">
                     <div className="header__wrapper">
                         <div className="logo">
-                            <img src={logo} alt="" />
+                       
+                       <Logo />
                         </div>
                         <select className='til' name="" id="" ref={language__choos} onChange={handleChange}>
                             <option value="1"> Uz</option>
@@ -184,14 +190,70 @@ function Hero() {
 
                 {question?.map((item) => {
                     return (
-                        <div className="boshla" ref={start} onClick={(e) => navigateByTestId(e, item.id, item.count, item.subject_id)} key={item.id} >
-                            <h1>{item.subject.name}</h1>
+                        <div className="boshla relative overflow-hidden flex-grow flex items-center justify-center py-20 px-4" ref={start} onClick={(e) => navigateByTestId(e, item.id, item.count, item.subject_id)} key={item.id} >
+                            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl -z-10">
+        <div className="absolute top-20 right-0 w-96 h-96 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+        <div className="absolute bottom-20 left-0 w-96 h-96 bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+      </div>
+
+         <div className="max-w-4xl w-full text-center space-y-12">
+        <div className="space-y-6">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 text-[#2D3494] font-bold text-xs tracking-widest uppercase mb-4 animate-bounce">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#2D3494] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#2D3494]"></span>
+            </span>
+            Online Proficiency Test
+          </div>
+          <h1 className="text-6xl md:text-8xl font-black text-[#2D3494] tracking-tighter leading-none">
+           {item.subject.name}
+          </h1>
+          <p className="text-xl md:text-2xl text-slate-600 font-medium max-w-2xl mx-auto leading-relaxed">
+           {chosenLang?.name}
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6 max-w-3xl mx-auto text-left">
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-[#2D3494] mb-4">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            </div>
+            <h3 className="font-bold text-slate-900"> {item?.count} {chosenLang?.name2}</h3>
+            <p className="text-sm text-slate-500">{chosenLang?.name3}</p>
+          </div>
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-[#2D3494] mb-4">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            </div>
+            <h3 className="font-bold text-slate-900">{item?.time} {chosenLang?.name4}</h3>
+            <p className="text-sm text-slate-500">{chosenLang?.name5}</p>
+          </div>
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-[#2D3494] mb-4">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            </div>
+            <h3 className="font-bold text-slate-900">{chosenLang?.name6}</h3>
+            <p className="text-sm text-slate-500">{chosenLang?.name7}</p>
+          </div>
+        </div>
+
+        <button 
+          onClick={openTest}
+          className="group relative px-12 py-5 bg-gradient-to-r from-[#2D3494] to-[#4351DB] text-white rounded-2xl font-bold text-lg shadow-xl shadow-blue-200 hover:shadow-2xl hover:shadow-blue-300 transform hover:-translate-y-1 transition-all duration-300 active:scale-95"
+        >
+          <span className="flex items-center gap-2">
+            {chosenLang?.btn}
+            <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </span>
+        </button>
+      </div>
 
 
-                            <p>{chosenLang?.name} {item.count} {chosenLang?.name2} {item?.time} {chosenLang?.name3}</p>
+                          
 
-                            <button className='boshla_btn' onClick={openTest}>{chosenLang?.btn}</button>
-
+                         
 
                         </div>
                     )
@@ -211,8 +273,50 @@ function Hero() {
 
 
 
-                {/* login qismi  */}
+               
+<div ref={rule} className="rule flex-grow flex items-center justify-center p-6 bg-slate-50/50">
+      <div className="max-w-2xl w-full bg-white p-10 md:p-14 rounded-3xl shadow-2xl shadow-slate-200/50 border border-slate-100 animate-in zoom-in duration-300">
+        <div className="flex flex-col items-center text-center space-y-8">
+          <div className="w-24 h-24 bg-blue-50 rounded-full flex items-center justify-center text-[#2D3494] mb-4">
+             <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.246.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.246.477-4.5 1.253" />
+             </svg>
+          </div>
+          
+          <h2 className="text-3xl font-black text-[#2D3494]">Test qoidalari</h2>
+          
+          <ul className="text-left space-y-4 max-w-md mx-auto">
+            <li className="flex gap-4">
+              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold">1</span>
+              <p className="text-slate-600 leading-tight">Savollar sodda (A1) darajadan qiyin (C1) darajagacha o'sib boradi.</p>
+            </li>
+            <li className="flex gap-4">
+              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold">2</span>
+              <p className="text-slate-600 leading-tight">Sizda jami 60 daqiqa vaqt bor. Timer to'xtasa, test yakunlanadi.</p>
+            </li>
+            <li className="flex gap-4">
+              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold">3</span>
+              <p className="text-slate-600 leading-tight">Savollarga javob berish uchun eng to'g'ri variantni tanlang.</p>
+            </li>
+            <li className="flex gap-4">
+              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs font-bold">!</span>
+              <p className="text-slate-600 leading-tight font-semibold italic">Sahifadan chiqib ketmang, aks holda natijangiz saqlanmasligi mumkin.</p>
+            </li>
+          </ul>
 
+          <div className="pt-6 w-full">
+            <button
+              onClick={openRegister}
+              className="w-full py-5 bg-[#2D3494] text-white rounded-2xl font-bold text-xl shadow-xl shadow-blue-200 hover:shadow-blue-300 transform hover:scale-[1.02] active:scale-95 transition-all"
+            >
+              Tayyorman, boshlaymiz!
+            </button>
+            <p className="mt-4 text-xs text-slate-400 font-medium">Boshlash tugmasini bosishingiz bilan timer ishga tushadi.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+     {/* login qismi  */}
                 <div className="login" ref={login} >
                     <form className='form' onSubmit={(e) => testBosh(e)}>
                         <h4>{chosenLang?.log} </h4>

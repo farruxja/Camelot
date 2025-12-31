@@ -46,7 +46,7 @@
     right: 0;
    
     top: 0;
-    
+    z-index: 100;
     width: 100%;
     border-bottom: 1px solid rgba(128, 128, 128, 0.24);
     backdrop-filter: blur(10px);
@@ -267,10 +267,17 @@
 
 
 
+.rule {
+  position: fixed;
+  inset: 0;
 
+  display: none;
+  z-index: 50;
+}
 
-
-
+.rule.open__rule {
+  display: flex;
+}
 
 
 
