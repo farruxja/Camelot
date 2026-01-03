@@ -9,6 +9,7 @@ import TestPage from './pages/TestPage';
 import StartTest from './pages/StartTest';
 import CreateCustomer from './pages/CreateCustomer';
 import AboutPage from './pages/AboutPage';
+import Register from './pages/Register';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -31,6 +32,9 @@ const myRouter = createBrowserRouter([{
     },{
       path:"/about",
       element:<AboutPage/>
+    },{
+      path:"/register",
+      element:<Register/> 
     }
   ]
 }])

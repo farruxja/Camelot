@@ -105,7 +105,7 @@ function StartTest() {
         if (q.type === "writing") {
           return {
             question_id: q.id,
-            text: selectedAnswers[q.id],
+            text: (selectedAnswers[q.id] || "").trim(),
             customer_test_id,
           };
         }

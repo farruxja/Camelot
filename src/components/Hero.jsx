@@ -1,19 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import '../styles/hero.css'
-import { useNavigate } from 'react-router-dom'
+import { NavLink} from 'react-router-dom'
 
-import { Logo } from './Contaxt'
 
+import logo from '../img/camelor_loge.png'
 function Hero() {
 
     let start = useRef()
-    let login = useRef()
-
-    let name = useRef()
-    let phone = useRef()
-    let lastname = useRef()
-    let time = useRef()
-    let teacher_name = useRef()
+ 
     const [employee, setEmployee] = useState(null)
 
     const [question, setQuestion] = useState([])
@@ -21,7 +15,7 @@ function Hero() {
 
 
 
-    let navigate = useNavigate()
+
 
 
 
@@ -65,50 +59,13 @@ let rule = useRef()
 
 
     }
-    function openRegister() {
-        rule.current.classList.remove("open__rule")
-        login.current.classList.add("login__open")
-    }
 
 
-    const [sub_id, setSub_id] = useState()
+
 
     
    
 
-    async function testBosh(e) {
-        e.preventDefault()
-        let ready = {
-            full_name: `${name.current.value} ${lastname.current.value}`,
-            phone_number: phone.current.value,
-            subject_id: sub_id,
-            time: time.current.value,
-            teacher_name: teacher_name.current.value,
-        }
-        
-
-        let loginCustom = await fetch("https://dev.edu-devosoft.uz/api/customer/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(ready)
-        });
-        let jsonA = await loginCustom.json()
-
-
-        localStorage.setItem("customerId", jsonA.customer.id)
-
-  
-
-
-        navigate('/test')
-
-
-
-
-
-    }
 
 
 
@@ -138,7 +95,6 @@ let rule = useRef()
        
 
 
-        setSub_id(subject_id)
 
 
 
@@ -148,11 +104,80 @@ let rule = useRef()
 
 
 
-    const languages = [
-        { id: "1", name: " Bilimingizni jahon standartlari asosida tekshiring va kelajak sari birinchi qadamni tashlang.", name2: "ta Savol", name3: "A1 darajadan boshlanib, asta-sekin qiyinlashadi.",name4:"Daqiqa",name5:"Vaqtni to'g'ri taqsimlang va natijaga erishing.",name6:"Natijalar", name7:"Test yakunida batafsil tahlilga ega bo'ling.",  btn: "Testni boshlash", log: "Malumotingizni kiriting", log2: "Ismingiz", log3: "Familiyangiz", log4: "Raqamingiz", log5: "O'zingizga qulay vaqt?", log6: "O'zingizga ustoz tanlang.", log7: 'Kirish', def_time: "Hohlagan vaqt", def__teacher: "Hohlagan ustoz" },
-        { id: "2", name: " Проверьте свои знания по мировым стандартам и сделайте первый шаг в будущее.", name2: "вопросы", name3: "Начиная с уровня A1, постепенно усложняясь.",name4:"Минуты",name5:"Правильно распределите время и достигните результата.",name6:"Результаты", name7:"Получите подробный анализ в конце теста.", btn: "Начать тест", log: "Введите вашу информацию", log2: "Ваше имя", log3: "Ваша фамилия", log4: "Ваш номер", log5: "Удобное для вас время?", log6: "Выберите себе учителя.", log7: 'Войти', def_time: "Любое время", def__teacher: "Любой учитель" },
-        { id: "3", name: " Test your knowledge based on global standards and take the first step towards the future.", name2: "Questions", name3: "Starting from A1 level, gradually getting more difficult.",name4:"Minutes",name5:"Manage your time well and achieve results.",name6:"Results", name7:"Get a detailed analysis at the end of the test.", btn: "Start the test", log: "Enter your information", log2: "Your name", log3: "Your surname", log4: "Your number", log5: "A convenient time for you?", log6: "Choose a teacher for yourself.", log7: 'Login', def_time: "Any time", def__teacher: "Any teacher" },
-    ];
+const languages = [
+  { 
+    id: "1", 
+    name: "Bilimingizni jahon standartlari asosida tekshiring va kelajak sari birinchi qadamni tashlang.",
+    name2: "ta Savol",
+    name3: "A1 darajadan boshlanib, asta-sekin qiyinlashadi.",
+    name4:"Daqiqa",
+    name5:"Vaqtni to'g'ri taqsimlang va natijaga erishing.",
+    name6:"Natijalar",
+    name7:"Test yakunida batafsil tahlilga ega bo'ling.",
+    btn: "Testni boshlash",
+    log: "Malumotingizni kiriting",
+    log2: "Ismingiz",
+    log3: "Familiyangiz",
+    log4: "Raqamingiz",
+    log5: "O'zingizga qulay vaqt?",
+    log6: "O'zingizga ustoz tanlang.",
+    log7: 'Kirish',
+    def_time: "Hohlagan vaqt",
+    def__teacher: "Hohlagan ustoz",
+    rule1: "Savollar sodda (A1) darajadan qiyin (C1) darajagacha o'sib boradi.",
+    rule2: "Sizda jami {time} daqiqa vaqt bor. Timer to'xtasa, test yakunlanadi.",
+    rule3: "Savollarga javob berish uchun eng to'g'ri variantni tanlang.",
+    rule4: "Sahifadan chiqib ketmang, aks holda natijangiz saqlanmasligi mumkin."
+  },
+  { 
+    id: "2",
+    name: "Проверьте свои знания по мировым стандартам и сделайте первый шаг в будущее.",
+    name2: "вопросы",
+    name3: "Начиная с уровня A1, постепенно усложняясь.",
+    name4:"Минуты",
+    name5:"Правильно распределите время и достигните результата.",
+    name6:"Результаты",
+    name7:"Получите подробный анализ в конце теста.",
+    btn: "Начать тест",
+    log: "Введите вашу информацию",
+    log2: "Ваше имя",
+    log3: "Ваша фамилия",
+    log4: "Ваш номер",
+    log5: "Удобное для вас время?",
+    log6: "Выберите себе учителя.",
+    log7: 'Войти',
+    def_time: "Любое время",
+    def__teacher: "Любой учитель",
+    rule1: "Вопросы растут от простых (A1) до сложных (C1).",
+    rule2: "У вас есть {time} минут. Когда таймер остановится, тест завершится.",
+    rule3: "Выберите самый правильный вариант ответа.",
+    rule4: "Не покидайте страницу, иначе результат может не сохраниться."
+  },
+  { 
+    id: "3",
+    name: "Test your knowledge based on global standards and take the first step towards the future.",
+    name2: "Questions",
+    name3: "Starting from A1 level, gradually getting more difficult.",
+    name4:"Minutes",
+    name5:"Manage your time well and achieve results.",
+    name6:"Results",
+    name7:"Get a detailed analysis at the end of the test.",
+    btn: "Start the test",
+    log: "Enter your information",
+    log2: "Your name",
+    log3: "Your surname",
+    log4: "Your number",
+    log5: "A convenient time for you?",
+    log6: "Choose a teacher for yourself.",
+    log7: 'Login',
+    def_time: "Any time",
+    def__teacher: "Any teacher",
+    rule1: "Questions increase from easy (A1) to hard (C1).",
+    rule2: "You have {time} minutes. When the timer stops, the test ends.",
+    rule3: "Select the most correct answer.",
+    rule4: "Do not leave the page, otherwise your result may not be saved."
+  },
+];
 
 
     const chosenLang = languages.find((lang) => lang.id === language);
@@ -163,7 +188,7 @@ let rule = useRef()
  
 
 
-
+const [testTime, setTestTime] = useState(0);
     
 
     return (
@@ -176,7 +201,7 @@ let rule = useRef()
                     <div className="header__wrapper">
                         <div className="logo">
                        
-                       <Logo />
+                  <img src={logo} alt="" />
                         </div>
                         <select className='til' name="" id="" ref={language__choos} onChange={handleChange}>
                             <option value="1"> Uz</option>
@@ -190,7 +215,7 @@ let rule = useRef()
 
                 {question?.map((item) => {
                     return (
-                        <div className="boshla relative overflow-hidden flex-grow flex items-center justify-center py-20 px-4" ref={start} onClick={(e) => navigateByTestId(e, item.id, item.count, item.subject_id)} key={item.id} >
+                        <div className="boshla relative overflow-hidden flex-grow flex items-center justify-center py-20 px-4" ref={start} onClick={(e) => navigateByTestId(e, item.id, item.count, item.subject_id, setTestTime(item.time)) } key={item.id} >
                             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl -z-10">
         <div className="absolute top-20 right-0 w-96 h-96 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
         <div className="absolute bottom-20 left-0 w-96 h-96 bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
@@ -288,94 +313,34 @@ let rule = useRef()
           <ul className="text-left space-y-4 max-w-md mx-auto">
             <li className="flex gap-4">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold">1</span>
-              <p className="text-slate-600 leading-tight">Savollar sodda (A1) darajadan qiyin (C1) darajagacha o'sib boradi.</p>
+              <p className="text-slate-600 leading-tight">{chosenLang?.rule1}</p>
             </li>
             <li className="flex gap-4">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold">2</span>
-              <p className="text-slate-600 leading-tight">Sizda jami 60 daqiqa vaqt bor. Timer to'xtasa, test yakunlanadi.</p>
+              <p className="text-slate-600 leading-tight">  {chosenLang?.rule2.replace("{time}", testTime)}</p>
             </li>
             <li className="flex gap-4">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold">3</span>
-              <p className="text-slate-600 leading-tight">Savollarga javob berish uchun eng to'g'ri variantni tanlang.</p>
+              <p className="text-slate-600 leading-tight">{chosenLang?.rule3}</p>
             </li>
             <li className="flex gap-4">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs font-bold">!</span>
-              <p className="text-slate-600 leading-tight font-semibold italic">Sahifadan chiqib ketmang, aks holda natijangiz saqlanmasligi mumkin.</p>
+              <p className="text-slate-600 leading-tight font-semibold italic">{chosenLang?.rule4}</p>
             </li>
           </ul>
 
           <div className="pt-6 w-full">
-            <button
-              onClick={openRegister}
+           <NavLink to={"/register"} > <button
+             
               className="w-full py-5 bg-[#2D3494] text-white rounded-2xl font-bold text-xl shadow-xl shadow-blue-200 hover:shadow-blue-300 transform hover:scale-[1.02] active:scale-95 transition-all"
             >
               Tayyorman, boshlaymiz!
-            </button>
+            </button></NavLink>
             <p className="mt-4 text-xs text-slate-400 font-medium">Boshlash tugmasini bosishingiz bilan timer ishga tushadi.</p>
           </div>
         </div>
       </div>
     </div>
-     {/* login qismi  */}
-                <div className="login" ref={login} >
-                    <form className='form' onSubmit={(e) => testBosh(e)}>
-                        <h4>{chosenLang?.log} </h4>
-
-
-
-                        <div className="login__content">
-                            <label htmlFor="ism">{chosenLang?.log2}</label>
-                            <input ref={name} type="text" id='ism' required />
-                            <label htmlFor="fam">{chosenLang?.log3}</label>
-                            <input ref={lastname} type="text" id='fam' required />
-                            <label htmlFor="num">{chosenLang?.log4}</label>
-                            <input ref={phone}
-                                type="tel"
-                                id="num"
-                                name="phone"
-
-                                pattern="^\+998\d{9}$" 
-                                defaultValue={"+998"}
-                                placeholder=" 99 *** ** **"
-                                required
-                            />
-                            <div id="choice">
-                                <div className="time">
-                                    <label htmlFor="time">{chosenLang?.log5}</label>
-                                    <select id='time' ref={time} required>
-                                        <option value="hohlagan vaqt">{chosenLang?.def_time}</option>
-                                        <option value="08:00-10:00">08:00-10:00</option>
-                                        <option value="10:00-12:00">10:00-12:00</option>
-                                        <option value="14:00-16:00">14:00-16:00</option>
-                                        <option value="16:00-18:00">16:00-18:00</option>
-                                        <option value="18:30-20:30">18:30-20:30</option>
-
-                                    </select>
-                                </div>
-                                <div className="teacher" >
-                                    <label htmlFor="teacher">{chosenLang?.log6}</label>
-                                    <select id='teacher' ref={teacher_name} required>
-                                        <option value="hohlagan ustoz">{chosenLang?.def__teacher}</option>
-                                        {employee?.map((item, index) => {
-                                            return (
-                                                <option key={index} value={item?.full_name}>{item?.full_name}</option>
-                                            )
-                                        })}
-                                    </select>
-                                </div>
-
-                            </div>
-
-
-
-
-                        </div>
-                        <button className='login__button' type="submit">{chosenLang?.log7}</button>
-                    </form>
-
-
-
-                </div>
 
 
 
