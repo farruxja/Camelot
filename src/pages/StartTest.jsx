@@ -59,13 +59,12 @@ function StartTest() {
     }));
   };
 
-  const handleWritingChange = (questionId, value) => {
-    setSelectedAnswers((prev) => ({
-      ...prev,
-      [questionId]: value,
-    }));
-  };
-
+const handleWritingChange = (questionId, text) => {
+  setSelectedAnswers((prev) => ({
+    ...prev,
+    [questionId]: text,
+  }));
+};
   /* ================== SAVE RESULT ================== */
   const finishTest = async () => {
     clearInterval(intervalRef.current);
@@ -102,13 +101,16 @@ function StartTest() {
           };
         }
 
-        if (q.type === "writing") {
-          return {
-            question_id: q.id,
-            text: (selectedAnswers[q.id] || "").trim(),
-            customer_test_id,
-          };
-        }
+     if (q.type === "writing") {
+  return {
+    question_id: q.id,
+    writing:
+      typeof selectedAnswers[q.id] === "string"
+        ? selectedAnswers[q.id].trim()
+        : "",
+    customer_test_id,
+  };
+}
 
         return null;
       })
@@ -157,7 +159,7 @@ function StartTest() {
       {/* ================= QUESTION ================= */}
       <div className="flex-grow flex items-center justify-center px-6">
         <div className="max-w-3xl w-full bg-white rounded-3xl p-8 shadow">
-          <h2 className="text-2xl font-extrabold mb-8">
+          <h2 id="question" className="text-2xl font-extrabold mb-8  break-words">
             {currentQuestion.question}
           </h2>
 

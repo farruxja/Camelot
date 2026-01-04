@@ -308,31 +308,31 @@ const [testTime, setTestTime] = useState(0);
              </svg>
           </div>
           
-          <h2 className="text-3xl font-black text-[#2D3494]">Test qoidalari</h2>
+          <h2 id='r2' className="text-3xl font-black text-[#2D3494]">Test qoidalari</h2>
           
           <ul className="text-left space-y-4 max-w-md mx-auto">
             <li className="flex gap-4">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold">1</span>
-              <p className="text-slate-600 leading-tight">{chosenLang?.rule1}</p>
+              <p id='rp' className="text-slate-600 leading-tight">{chosenLang?.rule1}</p>
             </li>
             <li className="flex gap-4">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold">2</span>
-              <p className="text-slate-600 leading-tight">  {chosenLang?.rule2.replace("{time}", testTime)}</p>
+              <p id='rp' className="text-slate-600 leading-tight">  {chosenLang?.rule2.replace("{time}", testTime)}</p>
             </li>
             <li className="flex gap-4">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold">3</span>
-              <p className="text-slate-600 leading-tight">{chosenLang?.rule3}</p>
+              <p id='rp' className="text-slate-600 leading-tight">{chosenLang?.rule3}</p>
             </li>
             <li className="flex gap-4">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs font-bold">!</span>
-              <p className="text-slate-600 leading-tight font-semibold italic">{chosenLang?.rule4}</p>
+              <p id='rp' className="text-slate-600 leading-tight font-semibold italic">{chosenLang?.rule4}</p>
             </li>
           </ul>
 
           <div className="pt-6 w-full">
            <NavLink to={"/register"} > <button
              
-              className="w-full py-5 bg-[#2D3494] text-white rounded-2xl font-bold text-xl shadow-xl shadow-blue-200 hover:shadow-blue-300 transform hover:scale-[1.02] active:scale-95 transition-all"
+              className="btn_text w-full py-5 bg-[#2D3494] text-white rounded-2xl font-bold text-xl shadow-xl shadow-blue-200 hover:shadow-blue-300 transform hover:scale-[1.02] active:scale-95 transition-all"
             >
               Tayyorman, boshlaymiz!
             </button></NavLink>
