@@ -20,10 +20,13 @@ function Register() {
       teacher: "Ustoz tanlang",
       anyTime: "Hohlagan vaqt",
       anyTeacher: "Hohlagan ustoz",
+      coursetime:"ertalabki guruh",
+      coursetime2:"tushdan keyingi guruh",
       submit: "Kirish",
       loading: "Yuklanmoqda...",
       error: "Ro‘yxatdan o‘tishda xatolik",
       noTest: "Test tanlanmagan",
+
     },
     ru: {
       title: "Введите ваши данные",
@@ -35,6 +38,9 @@ function Register() {
       teacher: "Выберите учителя",
       anyTime: "Любое время",
       anyTeacher: "Любой учитель",
+         coursetime: "утренняя группа",
+
+coursetime2: "послеобеденная группа",
       submit: "Войти",
       loading: "Загрузка...",
       error: "Ошибка регистрации",
@@ -50,6 +56,9 @@ function Register() {
       teacher: "Choose a teacher",
       anyTime: "Any time",
       anyTeacher: "Any teacher",
+      coursetime: "morning group",
+
+coursetime2: "afternoon group",
       submit: "Login",
       loading: "Loading...",
       error: "Registration error",
@@ -184,11 +193,8 @@ function Register() {
                 focus:border-[#2D3494] focus:ring-4 focus:ring-blue-50 outline-none"
               >
                 <option>{t.anyTime}</option>
-                <option>08:00-10:00</option>
-                <option>10:00-12:00</option>
-                <option>14:00-16:00</option>
-                <option>16:00-18:00</option>
-                <option>18:30-20:30</option>
+                <option>{t.coursetime}</option>
+                <option>{t.coursetime2}</option>
               </select>
 
               <select
