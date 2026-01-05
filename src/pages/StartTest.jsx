@@ -8,7 +8,10 @@ function StartTest() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [remainingTime, setRemainingTime] = useState(0);
+  const [successModal, setSuccessModal] = useState(false);
 
+const [writingError, setWritingError] = useState(false);
+const [loading, setLoading] = useState(false);
   const intervalRef = useRef(null);
 
   /* ================== FETCH QUESTIONS + TIME ================== */
@@ -66,65 +69,99 @@ const handleWritingChange = (questionId, text) => {
   }));
 };
   /* ================== SAVE RESULT ================== */
-  const finishTest = async () => {
-    clearInterval(intervalRef.current);
+const finishTest = async () => {
+  clearInterval(intervalRef.current);
+  setWritingError(false);
+  setLoading(true);
 
-    const customerTestBody = {
-      customer_id: +localStorage.getItem("customerId"),
-      test_id: +localStorage.getItem("choosen_test_id"),
-      started_at: localStorage.getItem("start_time"),
-      finished_at: new Date().toISOString(),
-      school_id: 6,
-    };
-
-    const res = await fetch(
-      "https://dev.edu-devosoft.uz/api/customer-test/",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(customerTestBody),
-      }
-    );
-
-    const json = await res.json();
-    const customer_test_id = json?.customer_test?.id;
-
-    if (!customer_test_id) return alert("Xatolik!");
-
-    const answersPayload = questions
-      .map((q) => {
-        if (q.type === "test") {
-          return {
-            question_id: q.id,
-            option_id: selectedAnswers[q.id],
-            customer_test_id,
-          };
-        }
-
-     if (q.type === "writing") {
-  return {
-    question_id: q.id,
-    writing:
-      typeof selectedAnswers[q.id] === "string"
-        ? selectedAnswers[q.id].trim()
-        : "",
-    customer_test_id,
+  const customerTestBody = {
+    customer_id: +localStorage.getItem("customerId"),
+    test_id: +localStorage.getItem("choosen_test_id"),
+    started_at: localStorage.getItem("start_time"),
+    finished_at: new Date().toISOString(),
+    school_id: 6,
   };
-}
 
-        return null;
-      })
-      .filter(Boolean);
+  const res = await fetch(
+    "https://dev.edu-devosoft.uz/api/customer-test/",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(customerTestBody),
+    }
+  );
 
-    await fetch("https://dev.edu-devosoft.uz/api/customer-answer", {
+  const json = await res.json();
+  const customer_test_id = json?.customer_test?.id;
+
+  if (!customer_test_id) {
+    setLoading(false);
+    alert("Testni yaratishda xatolik");
+    return;
+  }
+
+  const answersPayload = questions
+    .map((q) => {
+      if (q.type === "test") {
+        return {
+          question_id: q.id,
+          option_id: selectedAnswers[q.id],
+          customer_test_id,
+        };
+      }
+
+      if (q.type === "writing") {
+        return {
+          question_id: q.id,
+          writing:
+            typeof selectedAnswers[q.id] === "string"
+              ? selectedAnswers[q.id].trim()
+              : "",
+          customer_test_id,
+        };
+      }
+
+      return null;
+    })
+    .filter(Boolean);
+
+  const answerRes = await fetch(
+    "https://dev.edu-devosoft.uz/api/customer-answer",
+    {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ list: answersPayload }),
-    });
+    }
+  );
 
-    navigate("/");
-  };
+  const answerJson = await answerRes.json();
 
+  // ✍️ writing yozilganmi?
+  const writingHasText = questions.some(
+    (q) =>
+      q.type === "writing" &&
+      typeof selectedAnswers[q.id] === "string" &&
+      selectedAnswers[q.id].trim().length > 0
+  );
+
+  // ❌ FAQAT WRITING YOZILGAN + BACKEND XATO
+  if (!answerRes.ok && writingHasText) {
+    setLoading(false);
+    setWritingError(true);
+
+    alert(
+      answerJson?.message ||
+        "Writing javobida xatolik bor"
+    );
+
+    return;
+  }
+
+  // ✅ HAMMASI TO‘G‘RI
+  setLoading(false);
+  setSuccessModal(true);
+};
+  
   if (!questions.length)
     return (
       <div className="flex items-center justify-center h-screen">
@@ -185,20 +222,46 @@ const handleWritingChange = (questionId, text) => {
                 </button>
               ))}
 
-            {/* ===== WRITING ===== */}
-            {currentQuestion.type === "writing" && (
-              <textarea
-                placeholder="Javobingizni shu yerga yozing..."
-                value={selectedAnswers[currentQuestion.id] || ""}
-                onChange={(e) =>
-                  handleWritingChange(currentQuestion.id, e.target.value)
-                }
-                className="w-full min-h-[160px] p-5 border-2 border-slate-300 rounded-2xl focus:outline-none focus:border-[#2D3494]"
-              />
-            )}
+{currentQuestion.type === "writing" && (
+  <textarea
+    placeholder="Javobingizni shu yerga yozing..."
+    value={selectedAnswers[currentQuestion.id] || ""}
+    onChange={(e) =>
+      handleWritingChange(currentQuestion.id, e.target.value)
+    }
+    className={`w-full min-h-[160px] p-5 border-2 rounded-2xl focus:outline-none
+      ${
+        writingError
+          ? "border-red-500 bg-red-50"
+          : "border-slate-300 focus:border-[#2D3494]"
+      }`}
+  />
+)}
+
+
           </div>
         </div>
       </div>
+{successModal && (
+  <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+    <div className="bg-white rounded-2xl p-8 w-full max-w-md text-center">
+      <h2 className="text-2xl font-bold text-green-600 mb-4">
+        Muvaffaqiyatli 🎉
+      </h2>
+
+      <p className="text-slate-600 mb-6">
+        Test muvaffaqiyatli yakunlandi
+      </p>
+
+      <button
+        onClick={() => navigate("/")}
+        className="px-6 py-3 rounded-xl bg-[#2D3494] text-white font-bold"
+      >
+        Bosh sahifaga qaytish
+      </button>
+    </div>
+  </div>
+)}
 
       {/* ================= NAV ================= */}
       <div className="flex justify-between px-6 py-6 max-w-5xl mx-auto w-full">
@@ -211,12 +274,14 @@ const handleWritingChange = (questionId, text) => {
         </button>
 
         {currentIndex === questions.length - 1 ? (
-          <button
-            onClick={finishTest}
-            className="px-10 py-3 rounded-xl bg-red-600 text-white font-bold"
-          >
-            Yakunlash
-          </button>
+         <button
+  onClick={finishTest}
+  disabled={loading}
+  className="px-10 py-3 rounded-xl bg-red-600 text-white font-bold disabled:opacity-60"
+>
+  {loading ? "Yuklanmoqda..." : "Yakunlash"}
+</button>
+
         ) : (
           <button
             onClick={() => setCurrentIndex((p) => p + 1)}

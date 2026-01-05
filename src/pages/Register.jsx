@@ -1,13 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-
+import React, { useEffect, useRef, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import logo from '../img/camelor_loge.png'
+import "../styles/register.css"
 function Register() {
+
+
+
+   const [language, setLanguage] = useState("1")
+
+
+
+    const language__choos = useRef()
+    const handleChangelang = () => {
+        const til = language__choos.current.value;
+        setLanguage(til)
+
+
+    }
+   
   const navigate = useNavigate();
 
   const [employee, setEmployee] = useState([]);
   const [loading, setLoading] = useState(false);
+  
 
-  const lang = localStorage.getItem("choos__lang") || "uz";
+ 
 
   const TEXT = {
     uz: {
@@ -66,7 +83,7 @@ coursetime2: "afternoon group",
     },
   };
 
-  const t = TEXT[lang];
+  const t = TEXT[language === "1" ? "uz" : language === "2" ? "ru" : "en"];
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -126,9 +143,26 @@ coursetime2: "afternoon group",
   }
 
   return (
-    <div className="flex-grow flex items-center justify-center p-6 bg-slate-50/50">
-      <div className="max-w-md w-full animate-in fade-in slide-in-from-bottom-4 duration-500">
-        <div className="bg-white p-8 md:p-10 rounded-3xl shadow-2xl shadow-slate-200/50 border border-slate-100">
+    
+   <main>
+    <div className="reg__header">
+                    <div className="header__wrapper">
+                        <div className="logo">
+                       
+                  <NavLink to="/"><img src={logo} alt="" /></NavLink>
+                        </div>
+                        <select className='til' name="" id="" ref={language__choos} onChange={handleChangelang}>
+                            <option value="1"> Uz</option>
+                            <option value="2"> Rus</option>
+                            <option value="3"> Eng</option>
+                        </select>
+
+
+                    </div>
+                </div>
+     <div id="formm" className="flex-grow flex items-center justify-center p-6 bg-white md:bg-slate-50/50">
+      <div id="dov" className="border-0 shadow-none md:max-w-md w-full animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div className="bg-white  md:p-10 rounded-3xl shadow-2xl shadow-slate-200/50 border border-slate-100">
           <div className="text-center mb-10">
             <h2 className="text-2xl font-extrabold text-[#2D3494] tracking-tight">
               {t.title}
@@ -222,6 +256,7 @@ coursetime2: "afternoon group",
         </div>
       </div>
     </div>
+   </main>
   );
 }
 

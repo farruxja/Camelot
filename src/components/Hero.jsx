@@ -264,6 +264,7 @@ const [testTime, setTestTime] = useState(0);
 
         <button 
           onClick={openTest}
+          id="hero__btn"
           className="group relative px-12 py-5 bg-gradient-to-r from-[#2D3494] to-[#4351DB] text-white rounded-2xl font-bold text-lg shadow-xl shadow-blue-200 hover:shadow-2xl hover:shadow-blue-300 transform hover:-translate-y-1 transition-all duration-300 active:scale-95"
         >
           <span className="flex items-center gap-2">
@@ -299,7 +300,7 @@ const [testTime, setTestTime] = useState(0);
 
 
                
-<div ref={rule} className="rule flex-grow flex items-center justify-center p-6 bg-slate-50/50">
+<div ref={rule} className="rule flex-grow flex items-center justify-center bg-slate-50/50">
       <div className="max-w-2xl w-full bg-white p-10 md:p-14 rounded-3xl shadow-2xl shadow-slate-200/50 border border-slate-100 animate-in zoom-in duration-300">
         <div className="flex flex-col items-center text-center space-y-8">
           <div className="w-24 h-24 bg-blue-50 rounded-full flex items-center justify-center text-[#2D3494] mb-4">
@@ -308,31 +309,31 @@ const [testTime, setTestTime] = useState(0);
              </svg>
           </div>
           
-          <h2 id='r2' className="text-3xl font-black text-[#2D3494]">Test qoidalari</h2>
+          <h2 className="text-3xl font-black text-[#2D3494]">Test qoidalari</h2>
           
           <ul className="text-left space-y-4 max-w-md mx-auto">
             <li className="flex gap-4">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold">1</span>
-              <p id='rp' className="text-slate-600 leading-tight">{chosenLang?.rule1}</p>
+              <p className="text-slate-600 leading-tight">{chosenLang?.rule1}</p>
             </li>
             <li className="flex gap-4">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold">2</span>
-              <p id='rp' className="text-slate-600 leading-tight">  {chosenLang?.rule2.replace("{time}", testTime)}</p>
+              <p className="text-slate-600 leading-tight">  {chosenLang?.rule2.replace("{time}", testTime)}</p>
             </li>
             <li className="flex gap-4">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs font-bold">3</span>
-              <p id='rp' className="text-slate-600 leading-tight">{chosenLang?.rule3}</p>
+              <p className="text-slate-600 leading-tight">{chosenLang?.rule3}</p>
             </li>
             <li className="flex gap-4">
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs font-bold">!</span>
-              <p id='rp' className="text-slate-600 leading-tight font-semibold italic">{chosenLang?.rule4}</p>
+              <p className="text-slate-600 leading-tight font-semibold italic">{chosenLang?.rule4}</p>
             </li>
           </ul>
 
           <div className="pt-6 w-full">
            <NavLink to={"/register"} > <button
              
-              className="btn_text w-full py-5 bg-[#2D3494] text-white rounded-2xl font-bold text-xl shadow-xl shadow-blue-200 hover:shadow-blue-300 transform hover:scale-[1.02] active:scale-95 transition-all"
+              className="w-full py-5 bg-[#2D3494] text-white rounded-2xl font-bold text-xl shadow-xl shadow-blue-200 hover:shadow-blue-300 transform hover:scale-[1.02] active:scale-95 transition-all"
             >
               Tayyorman, boshlaymiz!
             </button></NavLink>

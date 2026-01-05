@@ -1,0 +1,41 @@
+.reg__header{
+    position: fixed;
+    left: 0;
+    right: 0;
+   
+    top: 0;
+    z-index: 100;
+    width: 100%;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.24);
+    backdrop-filter: blur(10px);
+}
+#formm{
+    margin-top: 90px;
+}
+
+
+
+
+
+@media (max-width: 768px) {
+  #formm {
+    background: #f9f9f9;
+  }
+
+  #formm #dov {
+    background: #f9f9f9; /* aynan bir xil */
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+@media(max-width:355px){
+    #formm{
+        margin-top: 95px;
+    } 
+}
+@media(max-width:353px){
+    #formm{
+        margin-top: 110px;
+    } 
+}

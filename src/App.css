@@ -46,14 +46,27 @@ body {
     transition: all 1s ease-in-out !important;
   }
 
+.p-10 {
+    padding: 2.5rem;
+}
 
+.pt-6 {
+  padding-top: 2.5rem;
+}
 #question{
   max-width: 705px;
 width: 100%;
+
+}
+@media(max-width:1000px) {
+  #question{
+    font-size: 20px;
+  }
+  
 }
 @media(max-width:510px) {
   #question{
-    font-size: 20px;
+    font-size: 18px;
   }
   
 }

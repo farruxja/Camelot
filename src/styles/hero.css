@@ -265,15 +265,15 @@
 
 
 
-
+#hero__btn{
+    margin-bottom: 20px;
+}
 
 .rule {
-  position: fixed;
-  inset: 0;
-  
   display: none;
   z-index: 50;
-}
+        margin-top: -20px;
+    }
 
 .rule.open__rule {
   display: flex;
@@ -393,30 +393,26 @@
     }
 }
 @media(max-width:425px){
-    .rule{
-        margin-top: 50px;
+   
+   #r2{
+        font-size: 27px;
+        margin-top: 10px;
     }
-  
   
 }
 @media(max-width:385px){
-    .rule{
-        margin-top: 78px;
-    }
+  
     .btn_text{
         font-size: 14px;
     }
 }
 
 @media(max-width:350px){
+    .p-6{
+        padding: 0;
+    }
+  
     
-  .rule{
-        margin-top: 144px;
-    }
-     #r2{
-        font-size: 27px;
-        margin-top: 10px;
-    }
     .test__boshla h1{
        font-size: 26px;
        p{
@@ -425,14 +421,11 @@
     }
 }
 @media(max-width:320px){
-    
-  .rule{
-        margin-top: 68px;
-    }
-    #r2{
-        font-size: 27px;
-        margin-top: 10px;
-    }
+      .p-10{
+        padding: 0;
+      }
+ 
+ 
     #rp{
         font-size: 14px;
     }
