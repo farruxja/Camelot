@@ -9,6 +9,7 @@ function StartTest() {
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [remainingTime, setRemainingTime] = useState(0);
   const [successModal, setSuccessModal] = useState(false);
+  const [finishing, setFinishing] = useState(false);
 
 const [writingError, setWritingError] = useState(false);
 const [loading, setLoading] = useState(false);
@@ -70,6 +71,7 @@ const handleWritingChange = (questionId, text) => {
 };
   /* ================== SAVE RESULT ================== */
 const finishTest = async () => {
+  setFinishing(true);
   clearInterval(intervalRef.current);
   setWritingError(false);
   setLoading(true);
@@ -160,6 +162,12 @@ const finishTest = async () => {
   // ✅ HAMMASI TO‘G‘RI
   setLoading(false);
   setSuccessModal(true);
+  setFinishing(false);
+
+  setTimeout(() => {
+  navigate("/");
+}, 2500);
+
 };
   
   if (!questions.length)
@@ -207,7 +215,7 @@ const finishTest = async () => {
                 <button
                   key={opt.id}
                   onClick={() => selectOption(currentQuestion.id, opt.id)}
-                  className={`w-full p-5 rounded-2xl border-2 flex justify-between items-center transition ${
+                  className={`w-full p-3 rounded-2xl border-2 flex justify-between items-center transition ${
                     selectedAnswers[currentQuestion.id] === opt.id
                       ? "border-[#2D3494] bg-blue-50"
                       : "border-slate-200 hover:bg-slate-50"
@@ -291,7 +299,19 @@ const finishTest = async () => {
           </button>
         )}
       </div>
+      {finishing && (
+  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div className="bg-white rounded-2xl p-8 text-center">
+      <div className="w-10 h-10 mx-auto mb-4 border-4 border-[#2D3494] border-t-transparent rounded-full animate-spin"></div>
+      <h2 className="text-lg font-bold text-[#2D3494]">
+        Yakunlanyapti...
+      </h2>
     </div>
+  </div>
+)}
+
+    </div>
+    
   );
 }
 

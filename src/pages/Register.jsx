@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import logo from '../img/camelor_loge.png'
 import "../styles/register.css"
@@ -20,7 +20,7 @@ function Register() {
    
   const navigate = useNavigate();
 
-  const [employee, setEmployee] = useState([]);
+
   const [loading, setLoading] = useState(false);
   
 
@@ -98,14 +98,7 @@ coursetime2: "afternoon group",
     setFormData((p) => ({ ...p, [name]: value }));
   };
 
-  useEffect(() => {
-    async function getEmployee() {
-      const res = await fetch("https://dev.edu-devosoft.uz/api/employee/web");
-      const json = await res.json();
-      setEmployee(json || []);
-    }
-    getEmployee();
-  }, []);
+ 
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -160,9 +153,9 @@ coursetime2: "afternoon group",
 
                     </div>
                 </div>
-     <div id="formm" className="flex-grow flex items-center justify-center p-6 bg-white md:bg-slate-50/50">
-      <div id="dov" className="border-0 shadow-none md:max-w-md w-full animate-in fade-in slide-in-from-bottom-4 duration-500">
-        <div className="bg-white  md:p-10 rounded-3xl shadow-2xl shadow-slate-200/50 border border-slate-100">
+     <div id="formm" className="flex-grow flex items-center justify-center p-6 bg-white ">
+      <div id="dov" className="border-0 shadow-none max-w-md w-full animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div  id="dov" className="bg-white  md:p-10 rounded-3xl shadow-2xl shadow-slate-200/50 border border-slate-100">
           <div className="text-center mb-10">
             <h2 className="text-2xl font-extrabold text-[#2D3494] tracking-tight">
               {t.title}
@@ -218,12 +211,12 @@ coursetime2: "afternoon group",
             </div>
 
             {/* SELECTS */}
-            <div className="grid grid-cols-2 gap-4">
+         
               <select
                 name="time"
                 value={formData.time}
                 onChange={handleChange}
-                className="px-4 py-3.5 rounded-2xl bg-slate-50 border border-slate-100
+                className="w-full px-4 py-3.5 rounded-2xl bg-slate-50 border border-slate-100
                 focus:border-[#2D3494] focus:ring-4 focus:ring-blue-50 outline-none"
               >
                 <option>{t.anyTime}</option>
@@ -231,19 +224,8 @@ coursetime2: "afternoon group",
                 <option>{t.coursetime2}</option>
               </select>
 
-              <select
-                name="teacher"
-                value={formData.teacher}
-                onChange={handleChange}
-                className="px-4 py-3.5 rounded-2xl bg-slate-50 border border-slate-100
-                focus:border-[#2D3494] focus:ring-4 focus:ring-blue-50 outline-none"
-              >
-                <option>{t.anyTeacher}</option>
-                {employee.map((e, i) => (
-                  <option key={i}>{e.full_name}</option>
-                ))}
-              </select>
-            </div>
+             
+          
 
             <button
               disabled={loading}

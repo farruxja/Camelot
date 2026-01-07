@@ -56,17 +56,6 @@ body {
 #question{
   max-width: 705px;
 width: 100%;
+font-size: 14px;
 
-}
-@media(max-width:1000px) {
-  #question{
-    font-size: 20px;
-  }
-  
-}
-@media(max-width:510px) {
-  #question{
-    font-size: 18px;
-  }
-  
 }

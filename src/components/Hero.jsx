@@ -215,7 +215,7 @@ const [testTime, setTestTime] = useState(0);
 
                 {question?.map((item) => {
                     return (
-                        <div className="boshla relative overflow-hidden flex-grow flex items-center justify-center py-20 px-4" ref={start} onClick={(e) => navigateByTestId(e, item.id, item.count, item.subject_id, setTestTime(item.time)) } key={item.id} >
+                        <div className="boshla relative overflow-hidden flex-grow flex items-center justify-center py-20 px-4 " ref={start} onClick={(e) => navigateByTestId(e, item.id, item.count, item.subject_id, setTestTime(item.time)) } key={item.id} >
                             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl -z-10">
         <div className="absolute top-20 right-0 w-96 h-96 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
         <div className="absolute bottom-20 left-0 w-96 h-96 bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
@@ -300,8 +300,8 @@ const [testTime, setTestTime] = useState(0);
 
 
                
-<div ref={rule} className="rule flex-grow flex items-center justify-center bg-slate-50/50">
-      <div className="max-w-2xl w-full bg-white p-10 md:p-14 rounded-3xl shadow-2xl shadow-slate-200/50 border border-slate-100 animate-in zoom-in duration-300">
+<div ref={rule} className="rule flex-grow flex items-center justify-center ">
+      <div className="max-w-2xl w-full bg-white p-10 md:p-14 rounded-3xl shadow-2xl shadow-slate-200/50 border border-slate-100 animate-in zoom-in duration-300  ">
         <div className="flex flex-col items-center text-center space-y-8">
           <div className="w-24 h-24 bg-blue-50 rounded-full flex items-center justify-center text-[#2D3494] mb-4">
              <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">

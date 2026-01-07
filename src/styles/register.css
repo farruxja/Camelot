@@ -17,25 +17,46 @@
 
 
 
-@media (max-width: 768px) {
+@media (max-width: 769px) {
   #formm {
     background: #f9f9f9;
+    margin-top: 43px;
   }
 
-  #formm #dov {
-    background: #f9f9f9; /* aynan bir xil */
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
+   #dov {
+  padding: 2.5rem;
+
+    
+
+  }
+
+  /* 🔽 H2 ni kichraytirish va pastga tushirish */
+  #formm h2 {
+    font-size: 20px;     /* oldin 24px (text-2xl) edi */
+    line-height: 1.3;
+  }
+
+  #formm .text-center {
+    margin-top: 10px;   /* headerga yopishmasin */
+    margin-bottom: 24px;
   }
 }
-@media(max-width:355px){
-    #formm{
-        margin-top: 95px;
-    } 
+@media(max-width:413px){
+  #dov{
+            padding: 1.5rem;
+  }
 }
-@media(max-width:353px){
-    #formm{
-        margin-top: 110px;
-    } 
+
+@media(max-width:398px){
+  .text-sm{
+    font-size: 12px;
+  }
+  #formm h2{
+    font-size: 18px;
+  }
+}
+@media(max-width:351px){
+#formm{
+  margin-top: 81px;
+}
 }
